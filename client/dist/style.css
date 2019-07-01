@@ -1,0 +1,256 @@
+@import url(https://fonts.googleapis.com/css?family=Cinzel);
+@import url(https://fonts.googleapis.com/css?family=Aldrich);
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+#container {
+    background:#282C34;
+
+}
+
+input {
+    margin-top: 2px;
+    -webkit-border-radius: 700px;
+    -moz-border-radius: 700px;
+    border-radius: 70px;
+}
+
+input::-webkit-input-placeholder {
+    direction: rtl;
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+#root {
+    position: absolute; 
+    top: 0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0;
+    background: #282C34
+}
+
+.sidebar {
+    height: 87vh;
+    width: 20%;
+    float:right;
+    background:#282C34;
+    text-align: center
+}
+
+#searchbar {
+    
+    border-color: rgba(83, 92, 99, 0.2);
+    font-family: 'Aldrich', serif;
+    text-align: center;
+    padding: 1.5%;
+    /* border-bottom: 1px solid rgba(255, 0, 0, .5); */
+    border-bottom: 1px solid rgb(233, 82, 13, .2);
+}
+
+#text-logo {
+    margin-top: 0;
+    font-family: "Cinzel", serif;
+    color: rgb(233, 82, 13);
+    
+}
+
+#inputBar {
+   
+}
+
+#imageContainer {
+       
+    float: left;
+    color: white;
+    text-align: center;
+    position: absolute;
+    margin-left: 5.5%;
+    top: 2%;
+    
+}
+
+
+#world {
+    left:5%;
+    display: inline;
+    color: rgb(233, 82, 13);
+    float: left;
+    position: relative;
+    top: 50%;
+    transform: translateY(-30%);
+    font-family: 'Cinzel', serif; 
+}
+
+#titulo {
+    margin-top:0px;
+    font-family: 'Cinzel', serif
+}
+
+#sideBarText {
+    margin-top: 7%;
+    text-align: center;
+    font-family: 'Aldrich', serif;
+    color: rgb(233, 82, 13);
+}
+
+#categoriaTitle{
+    color: white;
+    font-family: 'Cinzel', serif
+}
+
+/* .containerSwitch{
+    background: blue;
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-weight: 200;
+    font-size: 25px;
+    margin-top:4%;
+} */
+
+#textCategory1{
+    display: inline;
+}
+
+.button-sidebar {
+    color: white;
+    display: inline-block;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    border: solid, white, 4px;
+    background: rgb(233, 82, 13);
+    /* float: left; */
+    margin-left: 37%;
+    /* border: 3px solid white; */
+    bottom: 2px;
+    margin-top: 2.5%;
+    font-size: 8px;
+}
+
+#categoria {
+    margin-top:3%;
+}
+
+#containerSwitch {
+    /* width: 40%; */
+    display: inline;
+    float: right;
+    margin-right: 33%;
+    margin-top: 2.5%;
+}
+
+#containerButtonSwitch {
+    text-align: center;
+    height: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.consulateStyle {
+    height: 20px;
+    width: 20px;
+}
+
+
+.grow { 
+    
+    transition: all .2s ease-in-out; 
+}
+ 
+.grow:hover { 
+    transform: scale(3.0); 
+}
+
+#imgContainer {
+    /* display:inline;
+    width: 120px;
+    float:left */
+  
+}
+
+#cardContainer {
+    display:inline;
+    width: 120px;
+}
+
+#consulateImg {
+
+position: absolute;
+z-index: 1
+
+}
+
+#typeOfPost {
+    color: white;
+    font-family: 'Cinzel', serif
+}
+
+.checkBoxContainer {
+    color: rgb(233, 82, 13);
+    font-family: 'Cinzel', serif;
+}
+
+#boxOption {
+    color:green
+}
+
+.wrapper {
+    text-align: center;
+}
+.wrapper ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    margin-left: 3.5%;
+    display: inline-block;
+}
+.wrapper li {
+    float: left;
+    padding: 2px 5px;
+}
+
+#bossReview {
+    margin-top:4%;
+    color: white;
+    font-family: 'Cinzel', serif
+}
+
+#optionsContainer {
+    color: white;
+    font-family: 'Cinzel', serif
+}
+
+#optionsWrapper {
+    display: inline-flex;
+    margin: 2%;
+    text-align: center;
+}
+
+#bossOption {
+    padding:15px;
+    margin-left:3px;
+}
+
+#labelWrapper {
+    margin-bottom:5px
+}
+
+span {
+    position:relative;
+    bottom:5%;
+    margin-left:5%;
+    color: rgb(233, 82, 13);
+    font-family: 'Cinzel', serif
+    
+}
