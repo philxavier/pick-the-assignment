@@ -30,6 +30,7 @@
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "material-icons-react": "^1.0.4",
+    "mongoose": "^5.6.2",
     "nightmare": "^3.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.3.1",
@@ -69,7 +70,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "jest": "^24.8.0",
-    "mongoose": "^5.1.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.3.0"
