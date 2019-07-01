@@ -70,6 +70,7 @@ class SimpleMap extends Component {
   }
 
   render() {
+    console.log("THIS IS API KEY", google_api.key);
     return (
       // Important! Always set the container height explicitly
       <div
