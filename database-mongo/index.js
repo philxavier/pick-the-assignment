@@ -1,11 +1,11 @@
 /* eslint-disable linebreak-style */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const mongoose = require('mongoose');
-// var config = require('../mongo.config.js');
+var config = require('../mongo.config.js');
 
 mongoose
   //connecting to mongo atlas and choosing database
-  .connect(process.env.MONGO_URI, { dbName: 'mvp' })
+  .connect(config.URI, { dbName: 'mvp' })
   .then(() => {
     console.log('Connection to the Atlas Cluster is successful!');
   })

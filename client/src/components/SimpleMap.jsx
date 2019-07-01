@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
-// import google_api from '../../../google_api.js';
+import google_api from "../../../google_api.js";
 import TemplateConsulate from "./TemplateConsulate.jsx";
 import TemplateEmbassy from "./TemplateEmbassy.jsx";
 import TemplateMission from "./TemplateMission.jsx";
@@ -82,7 +82,7 @@ class SimpleMap extends Component {
         }}
       >
         <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.google_api }}
+          bootstrapURLKeys={{ key: google_api.key }}
           center={this.state.center}
           zoom={this.state.zoom}
         >
