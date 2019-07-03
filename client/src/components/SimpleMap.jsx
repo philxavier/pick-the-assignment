@@ -21,7 +21,6 @@ class SimpleMap extends Component {
   componentDidMount() {
     Axios.get("/posts")
       .then(result => {
-        console.log("these are the results", result);
         this.setState({
           fullListOfPosts: result.data
         });
@@ -70,7 +69,6 @@ class SimpleMap extends Component {
   }
 
   render() {
-    console.log("THIS IS API KEY", google_api.key);
     return (
       // Important! Always set the container height explicitly
       <div
