@@ -2,7 +2,6 @@ import React from "react";
 import { render, shallow, mount, configure } from "enzyme";
 import ConsulateImg from "../ConsulateImg.jsx";
 import Adapter from "enzyme-adapter-react-16";
-import renderer from "react-test-renderer";
 
 configure({ adapter: new Adapter() });
 

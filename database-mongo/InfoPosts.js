@@ -1,28 +1,28 @@
 /* eslint-disable no-shadow */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-param-reassign */
-const BossList = require('./bossList.js');
-const PriceInfo = require('./priceInfo.js');
-let postsString = require('./postsString.js');
-const cities = require('cities.json');
+const BossList = require("./bossList.js");
+const PriceInfo = require("./priceInfo.js");
+let postsString = require("./postsString.js").postString;
+const cities = require("cities.json");
 
-const arr = postsString.split('--');
+const arr = postsString.split("--");
 
 const posts = arr.map((ele, ind) => {
-  ele = ele.split(',');
+  ele = ele.split(",");
   // Make first letter of string Upper Case
-  
+
   return {
     name: ele[0],
     type: ele[1].trim(),
     class: ele[2].trim(),
-    boss: BossList[ind],
+    boss: BossList[ind]
   };
 });
 
 let findCitiesCoordinates = (cities, posts) => {
   let postsNames = posts.map(ele => ele.name);
-  return cities.filter((ele) => {
+  return cities.filter(ele => {
     return postsNames.includes(ele.name);
   });
 };
@@ -67,19 +67,16 @@ let includeCoordinates = (coordinates, posts) => {
 
 const includePriceAndCoordinates = (PriceInfo, posts) => {
   return new Promise((resolve, reject) => {
-    PriceInfo
-      .then((result) => {
-        includePrices(result, posts);
-        includeCoordinates(coordinates, posts);
-        resolve(posts);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+    PriceInfo.then(result => {
+      includePrices(result, posts);
+      includeCoordinates(coordinates, posts);
+      resolve(posts);
+    }).catch(err => {
+      reject(err);
+    });
   });
 };
 
 let completePostInfo = includePriceAndCoordinates(PriceInfo, posts);
 
 module.exports = completePostInfo;
-

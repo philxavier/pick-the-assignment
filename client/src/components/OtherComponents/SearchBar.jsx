@@ -1,72 +1,111 @@
-import { Icon, Input } from 'semantic-ui-react'
-import React, { Component } from 'react'
-import {World} from 'styled-icons/boxicons-regular/World'
-import Axios from 'axios';
+import { Icon, Input } from "semantic-ui-react";
+import React, { Component } from "react";
+import namesOfCities from "../../../../database-mongo/postsString";
+import { World } from "styled-icons/boxicons-regular/World";
+import Axios from "axios";
+import { thisExpression } from "@babel/types";
 
 export default class SearchBar extends Component {
-
   constructor(props) {
-    super(props)
-    this.state ={
-      barValue:''
-    }
+    super(props);
+    this.state = {
+      barValue: "",
+      namesOfCities: namesOfCities.namesOfCities,
+      suggestions: [],
+      activeSuggestions: false
+    };
 
     this.handleBarChange = this.handleBarChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-
   }
 
-  handleSearch() {
-    let searchTerm = this.state.barValue;
-    Axios.get(`/findPost/${searchTerm}`)
-    .then((result) => {
-      console.log('the data is here', result)
-      let cord1 = result.data[0].lat;
-      let cord2 = result.data[0].lng;
-      let newCenter = {lat:cord1, lng:cord2}
-      let zoom = 5;
-      this.props.handleSearchFromSearchBar(newCenter, zoom)
-    })
-    .catch((err) => {
-      console.log('there was an error', err)
-    })
-    
+  renderSuggestions() {
+    let { suggestions } = this.state;
+    return (
+      <div className="suggestion-list">
+        <ul>
+          {suggestions.map((ele, ind) => {
+            return (
+              <li key={ind}>
+                <span
+                  id={ele}
+                  ref={this.testRef}
+                  onClick={e => {
+                    var newBarValue = e.target.id;
+                    this.setState({
+                      barValue: newBarValue,
+                      activeSuggestions: !this.state.activeSuggestions
+                    });
+                  }}
+                  className="listed-item"
+                >
+                  {ele}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
 
+  handleSearch() {}
+
+  createSuggestionList(value) {
+    if (!value) {
+      this.setState({
+        suggestions: []
+      });
+      return;
+    }
+
+    const regex = new RegExp(`^${value}`, "i");
+    const suggestions = this.state.namesOfCities
+      .sort()
+      .filter(v => regex.test(v));
+    this.setState({
+      activeSuggestions: !this.activeSuggestions,
+      suggestions: suggestions
+    });
+    // this.renderSuggestions();
   }
 
   handleBarChange(e) {
-    let newBarValue = e.target.value;
+    let value = e.target.value;
     this.setState({
-      barValue: newBarValue
-    })
+      barValue: value
+    });
+
+    this.createSuggestionList(value);
   }
-
-
 
   render() {
     return (
-      <div id="searchbar">
-        <div id="imageContainer">
-          <World 
-            color= "rgb(233, 82, 13)"
-            size="40"
+      <div className="search-bar">
+        <div className="input-bar">
+          <Input
+            value={this.state.barValue}
+            size="large"
+            icon={
+              <Icon
+                onClick={() => {
+                  this.handleSearch();
+                }}
+                name="search"
+                inverted
+                circular
+                link
+              />
+            }
+            placeholder="Search..."
+            focus={true}
+            onChange={e => {
+              this.handleBarChange(e);
+            }}
           />
-          <h4 id="text-logo">Pick an Assignment</h4>
-        </div>
-        <div id="inputBar">
-          <Input value={this.state.barValue}
-                 size = "large" 
-                 icon={<Icon onClick={() => {this.handleSearch()}} name='search'inverted circular link  />} 
-                 placeholder='Search...' 
-                 focus={true}
-                 onChange={(e) => {this.handleBarChange(e)}}
-          />  
-                 
+          {this.state.activeSuggestions ? this.renderSuggestions() : null}
         </div>
       </div>
-    )
+    );
   }
 }
-
-
-
