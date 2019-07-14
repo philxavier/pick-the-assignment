@@ -33,6 +33,16 @@ class SimpleMap extends Component {
   componentDidUpdate(prevProps) {
     //if props are modified, lets filter the full list of posts and make into filtered list of posts so it can be rendered
     if (prevProps !== this.props) {
+      if (this.props.searchBarPost.length === 1) {
+        var post = this.props.searchBarPost[0].data[0];
+        setTimeout(() => {
+          this.setState({
+            filteredListOfPosts: [post]
+          });
+        }, 1000);
+
+        return;
+      }
       let filterOfClass = this.props.classOfPost;
       let filterOfType = this.props.type;
       let filterOfRates = this.props.currentRates;
@@ -82,8 +92,8 @@ class SimpleMap extends Component {
       >
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.google_api }}
-          center={this.state.center}
-          zoom={this.state.zoom}
+          center={this.props.center}
+          zoom={this.props.zoom}
         >
           {this.state.filteredListOfPosts.map((ele, ind) => {
             if (ele.type.includes("c")) {

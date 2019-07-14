@@ -51,9 +51,13 @@ export default class SearchBar extends Component {
 
   handleSearch() {
     var targetPost = this.state.barValue;
-    Axios.get(`./findPost/${targetPost}`).then(result => {
-      console.log("these are the results", results);
-    });
+    Axios.get(`./findPost/${targetPost}`)
+      .then(result => {
+        this.props.handleSearchFromSearchBar(result);
+      })
+      .catch(err => {
+        console.log("there was an error", err);
+      });
   }
 
   createSuggestionList(value) {

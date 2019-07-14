@@ -48,6 +48,7 @@ input::-webkit-input-placeholder {
   padding-top: 2%;
   border-color: rgba(83, 92, 99, 0.2);
   font-family: "Cinzel", serif;
+  font-weight: bold;
   /* font-family: "Aldrich", serif; */
   /* padding: 1.5%; */
   /* border-bottom: 1px solid rgba(255, 0, 0, .5); */
