@@ -26,6 +26,7 @@ app.get("/posts", (req, res) => {
 
 app.get("/findPost/:name", (req, res) => {
   let post = req.params.name;
+  console.log(post);
   findOne(post)
     .then(result => {
       console.log("these are the results in server", result);

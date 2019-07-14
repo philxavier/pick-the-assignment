@@ -49,7 +49,12 @@ export default class SearchBar extends Component {
     );
   }
 
-  handleSearch() {}
+  handleSearch() {
+    var targetPost = this.state.barValue;
+    Axios.get(`./findPost/${targetPost}`).then(result => {
+      console.log("these are the results", results);
+    });
+  }
 
   createSuggestionList(value) {
     if (!value) {
