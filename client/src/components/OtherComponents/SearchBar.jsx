@@ -19,6 +19,14 @@ export default class SearchBar extends Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
 
+  componentDidUpdate(prevprops) {
+    if (this.props.clearBar !== prevprops.clearBar) {
+      this.setState({
+        barValue: ""
+      });
+    }
+  }
+
   renderSuggestions() {
     let { suggestions } = this.state;
     return (
@@ -48,6 +56,8 @@ export default class SearchBar extends Component {
       </div>
     );
   }
+
+  clearBar() {}
 
   handleSearch() {
     var targetPost = this.state.barValue;

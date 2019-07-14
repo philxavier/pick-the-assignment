@@ -18,7 +18,8 @@ export default class App extends Component {
         lng: 30.33
       },
       zoom: 1,
-      searchBarPost: []
+      searchBarPost: [],
+      clearBar: false
     };
 
     this.handleSwitchClassChange = this.handleSwitchClassChange.bind(this);
@@ -31,7 +32,6 @@ export default class App extends Component {
     //let's see if that class of post is inside this.state.filters.classOfPost
     //if it is, let's remove it, if not, let's include it
     let newClassOfPost = this.state.filters.classOfPost.slice();
-
     HelperFuncs.buildNewClassOfPost(newClassOfPost, inputClassOfPost);
 
     this.setState({
@@ -39,7 +39,9 @@ export default class App extends Component {
         classOfPost: newClassOfPost,
         type: this.state.filters.type,
         currentRates: this.state.filters.currentRates
-      }
+      },
+      searchBarPost: [],
+      clearBar: !this.state.clearBar
     });
   }
 
@@ -56,7 +58,9 @@ export default class App extends Component {
         type: newTypeOfPost,
         classOfPost: this.state.filters.classOfPost,
         currentRates: this.state.filters.currentRates
-      }
+      },
+      searchBarPost: [],
+      clearBar: !this.state.clearBar
     });
   }
 
@@ -71,7 +75,9 @@ export default class App extends Component {
         type: this.state.filters.type,
         classOfPost: this.state.filters.classOfPost,
         currentRates: newRatesArr
-      }
+      },
+      searchBarPost: [],
+      clearBar: !this.state.clearBar
     });
   }
 
@@ -89,11 +95,14 @@ export default class App extends Component {
 
   render() {
     let { currentRates, classOfPost, type } = this.state.filters;
-    let { zoom, center, searchBarPost } = this.state;
+    let { zoom, center, searchBarPost, clearBar } = this.state;
 
     return (
       <div id="container">
-        <SearchBar handleSearchFromSearchBar={this.handleSearchFromSearchBar} />
+        <SearchBar
+          clearBar={clearBar}
+          handleSearchFromSearchBar={this.handleSearchFromSearchBar}
+        />
         <SideBar
           handleSwitchClassChange={this.handleSwitchClassChange}
           handleTypeChange={this.handleTypeChange}

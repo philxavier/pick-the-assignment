@@ -40,7 +40,6 @@ class SimpleMap extends Component {
             filteredListOfPosts: [post]
           });
         }, 1000);
-
         return;
       }
       let filterOfClass = this.props.classOfPost;
