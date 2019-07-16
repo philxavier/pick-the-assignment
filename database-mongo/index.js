@@ -69,7 +69,25 @@ let findOne = inputPost => {
   });
 };
 
+let findWithRegex = input => {
+  return new Promise((resolve, reject) => {
+    postModel.find(
+      { name: { $regex: `^${input}`, $options: "i" } },
+      (err, res) => {
+        if (err) {
+          console.log("there was an error finding regex", err);
+          reject(err);
+        } else {
+          // console.log("these are the results", res);
+          resolve(res);
+        }
+      }
+    );
+  });
+};
+
 module.exports.db = db;
 module.exports.postModel = postModel;
 module.exports.selectAll = selectAll;
 module.exports.findOne = findOne;
+module.exports.findWithRegex = findWithRegex;

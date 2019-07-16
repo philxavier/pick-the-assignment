@@ -3,13 +3,46 @@ import React, { Component } from "react";
 import { World } from "styled-icons/boxicons-regular/World";
 import Axios from "axios";
 import { connect } from "react-redux";
-import { changeBarValue } from "../../../../store/actions/SearchBarAction.jsx";
+import {
+  fetchPosts,
+  changeValue
+} from "../../../../store/actions/SearchBarAction.jsx";
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.handleBarChange = this.handleBarChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  renderSuggestions() {
+    let { fetchedPosts } = state;
+    return (
+      <div className="suggestion-list">
+        <ul>
+          {fetchedPosts.map((ele, ind) => {
+            return (
+              <li key={ind}>
+                <span
+                  id={ele}
+                  ref={this.testRef}
+                  onClick={e => {
+                    var newBarValue = e.target.id;
+                    this.setState({
+                      barValue: newBarValue,
+                      activeSuggestions: !this.state.activeSuggestions
+                    });
+                  }}
+                  className="listed-item"
+                >
+                  {ele}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
   }
 
   handleSearch() {
@@ -37,6 +70,7 @@ class SearchBar extends Component {
 
   render() {
     console.log(this.props);
+
     let { barValue } = this.props;
     return (
       <div id="searchbar">
@@ -62,7 +96,8 @@ class SearchBar extends Component {
             placeholder="Search..."
             focus={true}
             onChange={e => {
-              this.props.changeBarValue(e.target.value);
+              this.props.changeValue(e.target.value);
+              this.props.fetchPosts(e.target.value);
             }}
           />
         </div>
@@ -73,15 +108,19 @@ class SearchBar extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeBarValue: value => {
-      dispatch(changeBarValue(value));
+    changeValue: value => {
+      dispatch(changeValue(value));
+    },
+    fetchPosts: input => {
+      dispatch(fetchPosts(input));
     }
   };
 };
 
 const mapStateToProps = state => {
   return {
-    barValue: state.barValue
+    barValue: state.barValue,
+    fetchedPosts: state.fetchedPosts
   };
 };
 

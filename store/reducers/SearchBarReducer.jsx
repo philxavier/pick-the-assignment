@@ -14,6 +14,11 @@ const SearchBarReducer = (state = initState, action) => {
         ...state,
         barValue: action.payload
       };
+    case "SEARCH":
+      return {
+        ...state,
+        fetchedPosts: action.payload
+      };
 
     default:
       return state;

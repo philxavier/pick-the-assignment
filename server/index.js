@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 let selectAll = require("../database-mongo/index.js").selectAll;
 let findOne = require("../database-mongo/index.js").findOne;
+let findWithRegex = require("../database-mongo/index.js").findWithRegex;
 let compression = require("compression");
 let PORT = process.env.PORT || 3001;
 
@@ -26,9 +27,9 @@ app.get("/posts", (req, res) => {
 
 app.get("/findPost/:name", (req, res) => {
   let post = req.params.name;
-  findOne(post)
+  findWithRegex(post)
     .then(result => {
-      console.log("these are the results in server", result);
+      // console.log("these are the results", result);
       res.send(result);
     })
     .catch(err => {
