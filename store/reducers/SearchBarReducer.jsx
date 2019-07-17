@@ -4,7 +4,8 @@ let initState = {
   barValue: "",
   namesOfCities: namesOfCities.namesOfCities,
   suggestions: [],
-  activeSuggestions: false
+  activeSuggestions: false,
+  fetchedPosts: []
 };
 
 const SearchBarReducer = (state = initState, action) => {

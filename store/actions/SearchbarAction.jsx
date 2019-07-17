@@ -11,7 +11,7 @@ const fetchPosts = value => {
       Axios.get(`/findPost/${value}`).then(results => {
         dispatch({
           type: "SEARCH",
-          payload: results
+          payload: results.data
         });
       });
     }

@@ -7,6 +7,7 @@ import {
   fetchPosts,
   changeValue
 } from "../../../../store/actions/SearchBarAction.jsx";
+import OutsideClickHandler from "react-outside-click-handler";
 
 class SearchBar extends Component {
   constructor(props) {
@@ -16,27 +17,14 @@ class SearchBar extends Component {
   }
 
   renderSuggestions() {
-    let { fetchedPosts } = state;
+    let { fetchedPosts } = this.props;
     return (
       <div className="suggestion-list">
-        <ul>
+        <ul className="list-container">
           {fetchedPosts.map((ele, ind) => {
             return (
-              <li key={ind}>
-                <span
-                  id={ele}
-                  ref={this.testRef}
-                  onClick={e => {
-                    var newBarValue = e.target.id;
-                    this.setState({
-                      barValue: newBarValue,
-                      activeSuggestions: !this.state.activeSuggestions
-                    });
-                  }}
-                  className="listed-item"
-                >
-                  {ele}
-                </span>
+              <li className="listed-item" key={ind} className="listed-item">
+                {ele.name}
               </li>
             );
           })}
@@ -69,15 +57,11 @@ class SearchBar extends Component {
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.props.fetchedPosts);
 
     let { barValue } = this.props;
     return (
-      <div id="searchbar">
-        <div id="imageContainer">
-          <World color="rgb(233, 82, 13)" size="40" />
-          <h4 id="text-logo">Pick an Assignment</h4>
-        </div>
+      <div className="searchbar">
         <div id="inputBar">
           <Input
             value={barValue}
@@ -100,6 +84,17 @@ class SearchBar extends Component {
               this.props.fetchPosts(e.target.value);
             }}
           />
+          {this.props.fetchedPosts.length ? (
+            <OutsideClickHandler
+              onOutsideClick={() => {
+                //dispatch action that sets fetchedPosts to []
+                //If user clicks outside, we close the suggestion list
+                this.props.fetchPosts("");
+              }}
+            >
+              {this.renderSuggestions()}
+            </OutsideClickHandler>
+          ) : null}
         </div>
       </div>
     );
