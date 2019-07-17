@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import {
   fetchPosts,
   changeValue,
-  includeValue
+  includeValue,
+  changeMapParams
 } from "../../../../store/actions/SearchBarAction.jsx";
 import OutsideClickHandler from "react-outside-click-handler";
 
@@ -29,6 +30,7 @@ class SearchBar extends Component {
                   //THIS IS HOW WE INCLUDE THE SELECTED POST ON THE SEARCHBAR
                   onClick={e => {
                     this.props.includeValue(e.target.id);
+                    //HERE WE CLOSE THE SUGGESTION LIST BY PASSING AN EMPTY STRING TO FETCHPOSTS
                     this.props.fetchPosts("");
                   }}
                   id={ele.name}
@@ -45,15 +47,15 @@ class SearchBar extends Component {
   }
 
   handleSearch() {
-    let searchTerm = this.state.barValue;
+    let searchTerm = this.props.barValue;
     Axios.get(`/findPost/${searchTerm}`)
       .then(result => {
-        console.log("the data is here", result);
         let cord1 = result.data[0].lat;
         let cord2 = result.data[0].lng;
         let newCenter = { lat: cord1, lng: cord2 };
-        let zoom = 5;
-        this.props.handleSearchFromSearchBar(newCenter, zoom);
+        let zoom = 4;
+        var currentPost = result.data[0];
+        this.props.changeMapParams(newCenter, zoom, currentPost);
       })
       .catch(err => {
         console.log("there was an error", err);
@@ -68,8 +70,6 @@ class SearchBar extends Component {
   }
 
   render() {
-    console.log(this.props.fetchedPosts);
-
     let { barValue } = this.props;
     return (
       <div className="searchbar">
@@ -99,7 +99,8 @@ class SearchBar extends Component {
             <OutsideClickHandler
               onOutsideClick={() => {
                 //dispatch action that sets fetchedPosts to []
-                //If user clicks outside, we close the suggestion list
+                //If user clicks outside, we close the suggestion list THROUGH
+                //OUTSIDECLICKHANDLER
                 this.props.fetchPosts("");
               }}
             >
@@ -122,6 +123,9 @@ const mapDispatchToProps = dispatch => {
     },
     includeValue: nameOfPost => {
       dispatch(includeValue(nameOfPost));
+    },
+    changeMapParams: (coords, zoom, currentPost) => {
+      dispatch(changeMapParams(coords, zoom, currentPost));
     }
   };
 };

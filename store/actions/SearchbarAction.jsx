@@ -32,8 +32,16 @@ const includeValue = nameOfPost => {
   };
 };
 
+const changeMapParams = (center, zoom, currentPost) => {
+  return {
+    type: "CHANGE_MAP_PARAMS",
+    payload: [center, zoom, currentPost]
+  };
+};
+
 module.exports = {
   fetchPosts,
   changeValue,
-  includeValue
+  includeValue,
+  changeMapParams
 };
