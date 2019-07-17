@@ -69,7 +69,6 @@ input::-webkit-input-placeholder {
 .searchbar li:hover {
   text-decoration: underline;
   background: #282c34;
-  cursor: pointer;
 }
 
 .suggestion-list {

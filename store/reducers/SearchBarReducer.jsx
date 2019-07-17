@@ -20,6 +20,11 @@ const SearchBarReducer = (state = initState, action) => {
         ...state,
         fetchedPosts: action.payload
       };
+    case "INCLUDE_VALUE":
+      return {
+        ...state,
+        barValue: action.payload
+      };
 
     default:
       return state;

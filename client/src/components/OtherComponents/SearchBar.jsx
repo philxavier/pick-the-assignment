@@ -5,7 +5,8 @@ import Axios from "axios";
 import { connect } from "react-redux";
 import {
   fetchPosts,
-  changeValue
+  changeValue,
+  includeValue
 } from "../../../../store/actions/SearchBarAction.jsx";
 import OutsideClickHandler from "react-outside-click-handler";
 
@@ -24,7 +25,17 @@ class SearchBar extends Component {
           {fetchedPosts.map((ele, ind) => {
             return (
               <li key={ind}>
-                <span className="listed-item">{ele.name}</span>
+                <span
+                  //THIS IS HOW WE INCLUDE THE SELECTED POST ON THE SEARCHBAR
+                  onClick={e => {
+                    this.props.includeValue(e.target.id);
+                    this.props.fetchPosts("");
+                  }}
+                  id={ele.name}
+                  className="listed-item"
+                >
+                  {ele.name}
+                </span>
               </li>
             );
           })}
@@ -108,6 +119,9 @@ const mapDispatchToProps = dispatch => {
     },
     fetchPosts: input => {
       dispatch(fetchPosts(input));
+    },
+    includeValue: nameOfPost => {
+      dispatch(includeValue(nameOfPost));
     }
   };
 };

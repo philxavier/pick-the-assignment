@@ -25,7 +25,15 @@ const changeValue = value => {
   };
 };
 
+const includeValue = nameOfPost => {
+  return {
+    type: "INCLUDE_VALUE",
+    payload: nameOfPost
+  };
+};
+
 module.exports = {
   fetchPosts,
-  changeValue
+  changeValue,
+  includeValue
 };
