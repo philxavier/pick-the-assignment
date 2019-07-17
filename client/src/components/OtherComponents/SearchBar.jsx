@@ -23,8 +23,8 @@ class SearchBar extends Component {
         <ul className="list-container">
           {fetchedPosts.map((ele, ind) => {
             return (
-              <li className="listed-item" key={ind} className="listed-item">
-                {ele.name}
+              <li key={ind}>
+                <span className="listed-item">{ele.name}</span>
               </li>
             );
           })}
