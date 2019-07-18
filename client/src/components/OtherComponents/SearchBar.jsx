@@ -7,8 +7,9 @@ import {
   fetchPosts,
   changeValue,
   includeValue,
-  changeMapParams
-} from "../../../../store/actions/SearchBarAction.jsx";
+  changeMapParams,
+  clearSidebarConfig
+} from "../../../../store/actions/SearchbarAction.jsx";
 import OutsideClickHandler from "react-outside-click-handler";
 
 class SearchBar extends Component {
@@ -56,6 +57,7 @@ class SearchBar extends Component {
         let zoom = 4;
         var currentPost = result.data[0];
         this.props.changeMapParams(newCenter, zoom, currentPost);
+        this.props.clearSidebarConfig();
       })
       .catch(err => {
         console.log("there was an error", err);
@@ -81,6 +83,7 @@ class SearchBar extends Component {
               <Icon
                 onClick={() => {
                   this.handleSearch();
+                  this.props.clearSidebarConfig();
                 }}
                 name="search"
                 inverted
@@ -126,6 +129,9 @@ const mapDispatchToProps = dispatch => {
     },
     changeMapParams: (coords, zoom, currentPost) => {
       dispatch(changeMapParams(coords, zoom, currentPost));
+    },
+    clearSidebarConfig: () => {
+      dispatch(clearSidebarConfig());
     }
   };
 };

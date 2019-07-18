@@ -39,9 +39,16 @@ const changeMapParams = (center, zoom, currentPost) => {
   };
 };
 
+const clearSidebarConfig = () => {
+  return {
+    type: "CLEAR_SIDEBAR"
+  };
+};
+
 module.exports = {
   fetchPosts,
   changeValue,
   includeValue,
-  changeMapParams
+  changeMapParams,
+  clearSidebarConfig
 };

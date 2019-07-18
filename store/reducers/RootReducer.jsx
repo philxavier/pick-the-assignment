@@ -1,4 +1,5 @@
 import namesOfCities from "../../database-mongo/postsString.js";
+import HelperFuncs from "../../HelperFuncs.js";
 
 let initState = {
   barValue: "",
@@ -11,7 +12,13 @@ let initState = {
     lng: 30.33
   },
   zoom: 1,
-  postFromSearchbar: null
+  postFromSearchbar: null,
+  clearSidebar: false,
+  filters: {
+    classOfPost: [],
+    type: [],
+    currentRates: []
+  }
 };
 
 const SearchBarReducer = (state = initState, action) => {
@@ -43,6 +50,25 @@ const SearchBarReducer = (state = initState, action) => {
         ...state,
         postFromSearchbar: null,
         barValue: ""
+      };
+    case "CLEAR_SIDEBAR":
+      return {
+        ...state,
+        clearSidebar: true
+      };
+    case "HANDLE_SWITCH_CLASS_CHANGE":
+      let newClassOfPost = state.filters.classOfPost.slice();
+
+      HelperFuncs.buildNewClassOfPost(newClassOfPost, action.payload);
+
+      return {
+        ...state,
+
+        filters: {
+          classOfPost: newClassOfPost,
+          type: state.filters.type,
+          currentRates: state.filters.currentRates
+        }
       };
     default:
       return state;

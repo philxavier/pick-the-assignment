@@ -9,66 +9,40 @@ import { resetPostFromSearchbar } from "../../../store/actions/AppAction.jsx";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      filters: {
-        classOfPost: [],
-        type: [],
-        currentRates: []
-      }
-    };
 
-    this.handleSwitchClassChange = this.handleSwitchClassChange.bind(this);
+    // this.handleSwitchClassChange = this.handleSwitchClassChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleBossRateChange = this.handleBossRateChange.bind(this);
     this.handleSearchFromSearchBar = this.handleSearchFromSearchBar.bind(this);
-  }
-
-  handleSwitchClassChange(inputClassOfPost) {
-    //let's see if that class of post is inside this.state.filters.classOfPost
-    //if it is, let's remove it, if not, let's include it
-    let newClassOfPost = this.state.filters.classOfPost.slice();
-
-    HelperFuncs.buildNewClassOfPost(newClassOfPost, inputClassOfPost);
-
-    this.setState(
-      {
-        filters: {
-          classOfPost: newClassOfPost,
-          type: this.state.filters.type,
-          currentRates: this.state.filters.currentRates
-        }
-      },
-      this.props.resetPostFromSearchBar()
-    );
   }
 
   handleTypeChange(inputType) {
     //let's see if that class of post is inside this.state.filters.type
     //if it is, let's remove it, if not, let's include it
 
-    let newTypeOfPost = this.state.filters.type.slice();
+    let newTypeOfPost = this.props.filters.type.slice();
 
     HelperFuncs.buildNewTypeOfPost(newTypeOfPost, inputType);
 
     this.setState({
       filters: {
         type: newTypeOfPost,
-        classOfPost: this.state.filters.classOfPost,
-        currentRates: this.state.filters.currentRates
+        classOfPost: this.props.filters.classOfPost,
+        currentRates: this.props.filters.currentRates
       }
     });
   }
 
   handleBossRateChange(inputRate) {
     //let's filter the results based on the rates currently selected;
-    let newRatesArr = this.state.filters.currentRates.slice();
+    let newRatesArr = this.props.filters.currentRates.slice();
 
     HelperFuncs.buildNewRates(newRatesArr, inputRate);
 
     this.setState({
       filters: {
-        type: this.state.filters.type,
-        classOfPost: this.state.filters.classOfPost,
+        type: this.props.filters.type,
+        classOfPost: this.props.filters.classOfPost,
         currentRates: newRatesArr
       }
     });
@@ -82,14 +56,13 @@ class App extends Component {
   }
 
   render() {
-    let { currentRates, classOfPost, type } = this.state.filters;
-    let { zoom, center } = this.state;
+    let { currentRates, classOfPost, type } = this.props.filters;
     console.log("aaaaaaaaaaaaaaaaaaaaap", this.props);
     return (
       <div id="container">
         <SearchBar handleSearchFromSearchBar={this.handleSearchFromSearchBar} />
         <SideBar
-          handleSwitchClassChange={this.handleSwitchClassChange}
+          handleSwitchClassChange={this.props.handleSwitchClassChange}
           handleTypeChange={this.handleTypeChange}
           handleBossRateChange={this.handleBossRateChange}
         />
@@ -110,7 +83,8 @@ const mapStateToProps = state => {
   return {
     center: state.center,
     zoom: state.zoom,
-    postFromSearchbar: state.postFromSearchbar
+    postFromSearchbar: state.postFromSearchbar,
+    filters: state.filters
   };
 };
 
