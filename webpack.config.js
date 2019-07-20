@@ -17,7 +17,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: "babel-loader",
         query: {
-          presets: ["env", "react", "stage-0"]
+          presets: ["@babel/preset-env", "@babel/preset-react"]
         }
       },
       {
@@ -28,10 +28,6 @@ module.exports = {
           },
           {
             loader: "css-loader"
-            // query: {
-            //   modules: true,
-            //   localIdentName: '[name]__[local]___[hash:base64:5]'
-            // }
           }
         ]
       }

@@ -72,6 +72,7 @@ class SearchBar extends Component {
   }
 
   render() {
+    console.log("props in searchbar", this.props);
     let { barValue } = this.props;
     return (
       <div className="searchbar">

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Switch from "react-switch";
 import { connect } from "react-redux";
-import { handleSwitchClassChange } from "../../../../store/actions/AppAction.jsx";
+import { handleSwitchClassChange } from "../../../../store/actions/SwitchAction.jsx";
+import { reRenderMap } from "../../../../store/actions/SimpleMapAction.jsx";
 
 class SwitchExample extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class SwitchExample extends Component {
 
   handleChange() {
     this.props.handleSwitchClassChange(this.props.textValue);
+    this.props.reRenderMap();
     this.setState({
       checked: !this.state.checked
     });
@@ -48,6 +50,12 @@ const mapDispatchToProps = dispatch => {
   return {
     handleSwitchClassChange: inputClassOfPost => {
       dispatch(handleSwitchClassChange(inputClassOfPost));
+    },
+    handleSwitchClassChange: inputClass => {
+      dispatch(handleSwitchClassChange(inputClass));
+    },
+    reRenderMap: () => {
+      dispatch(reRenderMap());
     }
   };
 };

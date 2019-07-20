@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-
-export default class CheckboxOption extends Component {
+import { connect } from "react-redux";
+import { handleTypeChange } from "../../../../store/actions/CheckBoxOptionAction.jsx";
+import { resetPostFromSearchbar } from "../../../../store/actions/AppAction.jsx";
+import { reRenderMap } from "../../../../store/actions/SimpleMapAction.jsx";
+class CheckboxOption extends Component {
   constructor(props) {
     super(props);
   }
@@ -8,6 +11,7 @@ export default class CheckboxOption extends Component {
   handleChange(postReference) {
     let firstLetter = postReference[0].toLowerCase();
     this.props.handleTypeChange(firstLetter);
+    this.props.reRenderMap();
   }
 
   render() {
@@ -18,7 +22,8 @@ export default class CheckboxOption extends Component {
             id="checkbox"
             type="checkbox"
             onChange={() => {
-              this.props.resetPostFromSearchbar();
+              //this.props.resetPostFromSearchbar();
+              //ON CHANGE, WE NEED TO INCLUDE THIS CRITERIA FOR THE FILTERED POSTS ARRAY
               this.handleChange(this.props.typeOfPost);
             }}
             style={{ marginRight: "6px" }}
@@ -29,3 +34,22 @@ export default class CheckboxOption extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleTypeChange(inputType) {
+      dispatch(handleTypeChange(inputType));
+    },
+    resetPostFromSearchbar() {
+      dispatch(resetPostFromSearchbar());
+    },
+    reRenderMap() {
+      dispatch(reRenderMap());
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(CheckboxOption);

@@ -119,15 +119,12 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    clearSidebar: state.clearSidebar
+    clearSidebar: state.clearSidebar,
+    filter: state.filter,
+    fullListOfPosts: state.fullListOfPosts
   };
 };
 
-// SideBar.protoTypes = {
-//   callback : PropTypes.func,
-// }
-
-//We need to export to index.js to display
 export default connect(
   mapStateToProps,
   mapDispatchToProps
