@@ -19,19 +19,17 @@ class SwitchExample extends Component {
     });
   }
 
-  // componentDidUpdate(prevprops) {
-  //   if (this.props !== prevprops) {
-  //     if (this.props.postFromSearchbar) {
-  //       this.props.handleSwitchClassChange(this.props.textValue);
-  //       this.setState({
-  //         checked: false
-  //       });
-  //     }
-  //   }
-  // }
+  componentDidUpdate(prevprops) {
+    if (this.props !== prevprops) {
+      if (this.props.clearSidebar) {
+        this.setState({
+          checked: false
+        });
+      }
+    }
+  }
 
   render() {
-    console.log(this.props);
     return (
       <label>
         <Switch
@@ -62,7 +60,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    postFromSearchbar: state.postFromSearchbar
+    postFromSearchbar: state.postFromSearchbar,
+    clearSidebar: state.clearSidebar
   };
 };
 

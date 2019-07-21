@@ -32,16 +32,22 @@ const includeValue = nameOfPost => {
   };
 };
 
-const changeMapParams = (center, zoom, currentPost) => {
+const changeMapParams = (center, zoom, currentPost, searchResult) => {
   return {
     type: "CHANGE_MAP_PARAMS",
-    payload: [center, zoom, currentPost]
+    payload: [center, zoom, currentPost, searchResult]
   };
 };
 
-const clearSidebarConfig = () => {
+const resetSidebarConfig = () => {
   return {
-    type: "CLEAR_SIDEBAR"
+    type: "RESET_SIDEBAR_CONFIG"
+  };
+};
+
+const resetPostFromSearchbar = () => {
+  return {
+    type: "RESET_POST_FROM_SEARCHBAR"
   };
 };
 
@@ -50,5 +56,6 @@ module.exports = {
   changeValue,
   includeValue,
   changeMapParams,
-  clearSidebarConfig
+  resetSidebarConfig,
+  resetPostFromSearchbar
 };

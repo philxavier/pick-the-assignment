@@ -20,7 +20,8 @@ let initState = {
     currentRates: []
   },
   fullListOfPosts: [],
-  filteredListOfPosts: []
+  filteredListOfPosts: [],
+  // checkboxOptionStatus:false
 };
 
 const SearchBarReducer = (state = initState, action) => {
@@ -45,7 +46,9 @@ const SearchBarReducer = (state = initState, action) => {
         ...state,
         center: action.payload[0],
         zoom: action.payload[1],
-        postFromSearchbar: action.payload[2]
+        postFromSearchbar: action.payload[2],
+        filteredListOfPosts: action.payload[3],
+        checkBoxOptionStatus:true
       };
     case "RESET_POST_FROM_SEARCHBAR":
       return {
@@ -53,7 +56,7 @@ const SearchBarReducer = (state = initState, action) => {
         postFromSearchbar: null,
         barValue: ""
       };
-    case "CLEAR_SIDEBAR":
+    case "RESET_SIDEBAR_CONFIG":
       return {
         ...state,
         clearSidebar: true
@@ -63,6 +66,7 @@ const SearchBarReducer = (state = initState, action) => {
       HelperFuncs.buildNewClassOfPost(newClassOfPost, action.payload);
       return {
         ...state,
+        clearSidebar: false,
         filters: {
           classOfPost: newClassOfPost,
           type: state.filters.type,
@@ -107,7 +111,7 @@ const SearchBarReducer = (state = initState, action) => {
       let filterOfClass = state.filters.classOfPost;
       let filterOfType = state.filters.type;
       let filterOfRates = state.filters.currentRates;
-      debugger;
+
       let filteredArray = state.fullListOfPosts.slice();
 
       let filteredByType = HelperFuncs.filterByType(
@@ -128,10 +132,14 @@ const SearchBarReducer = (state = initState, action) => {
         filteredByRates,
         filteredByType
       );
-      console.log("resultArray", resultArray);
       return {
         ...state,
         filteredListOfPosts: resultArray
+      };
+      case "CHANGE_CHECKBOX_STATUS":
+      return {
+        ...state,
+        checkboxOptionStatus: !state.checkboxOptionStatus
       };
 
     default:

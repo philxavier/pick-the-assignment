@@ -8,7 +8,8 @@ import {
   changeValue,
   includeValue,
   changeMapParams,
-  clearSidebarConfig
+  resetSidebarConfig,
+  resetPostFromSearchbar
 } from "../../../../store/actions/SearchbarAction.jsx";
 import OutsideClickHandler from "react-outside-click-handler";
 
@@ -49,6 +50,7 @@ class SearchBar extends Component {
 
   handleSearch() {
     let searchTerm = this.props.barValue;
+    if (!searchTerm) return;
     Axios.get(`/findPost/${searchTerm}`)
       .then(result => {
         let cord1 = result.data[0].lat;
@@ -56,8 +58,10 @@ class SearchBar extends Component {
         let newCenter = { lat: cord1, lng: cord2 };
         let zoom = 4;
         var currentPost = result.data[0];
-        this.props.changeMapParams(newCenter, zoom, currentPost);
-        this.props.clearSidebarConfig();
+        let searchResult = result.data;
+        this.props.changeMapParams(newCenter, zoom, currentPost, searchResult);
+        this.props.resetPostFromSearchbar();
+        this.props.resetSidebarConfig();
       })
       .catch(err => {
         console.log("there was an error", err);
@@ -72,7 +76,6 @@ class SearchBar extends Component {
   }
 
   render() {
-    console.log("props in searchbar", this.props);
     let { barValue } = this.props;
     return (
       <div className="searchbar">
@@ -84,7 +87,6 @@ class SearchBar extends Component {
               <Icon
                 onClick={() => {
                   this.handleSearch();
-                  this.props.clearSidebarConfig();
                 }}
                 name="search"
                 inverted
@@ -128,11 +130,14 @@ const mapDispatchToProps = dispatch => {
     includeValue: nameOfPost => {
       dispatch(includeValue(nameOfPost));
     },
-    changeMapParams: (coords, zoom, currentPost) => {
-      dispatch(changeMapParams(coords, zoom, currentPost));
+    changeMapParams: (coords, zoom, currentPost, searchResult) => {
+      dispatch(changeMapParams(coords, zoom, currentPost, searchResult));
     },
-    clearSidebarConfig: () => {
-      dispatch(clearSidebarConfig());
+    resetSidebarConfig: () => {
+      dispatch(resetSidebarConfig());
+    },
+    resetPostFromSearchbar: () => {
+      dispatch(resetPostFromSearchbar());
     }
   };
 };

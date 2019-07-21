@@ -5,6 +5,14 @@ const handleTypeChange = inputType => {
   };
 };
 
+
+const changeCheckboxStatus = () => {
+  return {
+    type: "CHANGE_CHECKBOX_STATUS",
+  };
+};
+
 module.exports = {
-  handleTypeChange
+  handleTypeChange,
+  changeCheckboxStatus
 };
