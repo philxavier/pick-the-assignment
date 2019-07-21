@@ -20,7 +20,7 @@ let initState = {
     currentRates: []
   },
   fullListOfPosts: [],
-  filteredListOfPosts: [],
+  filteredListOfPosts: []
   // checkboxOptionStatus:false
 };
 
@@ -48,7 +48,7 @@ const SearchBarReducer = (state = initState, action) => {
         zoom: action.payload[1],
         postFromSearchbar: action.payload[2],
         filteredListOfPosts: action.payload[3],
-        checkBoxOptionStatus:true
+        checkBoxOptionStatus: true
       };
     case "RESET_POST_FROM_SEARCHBAR":
       return {
@@ -59,6 +59,7 @@ const SearchBarReducer = (state = initState, action) => {
     case "RESET_SIDEBAR_CONFIG":
       return {
         ...state,
+        filters: { classOfPost: [], type: [], currentRates: [] },
         clearSidebar: true
       };
     case "HANDLE_SWITCH_CLASS_CHANGE":
@@ -84,7 +85,8 @@ const SearchBarReducer = (state = initState, action) => {
           type: newTypeOfPost,
           classOfPost: state.filters.classOfPost,
           currentRates: state.filters.currentRates
-        }
+        },
+        clearSidebar: false
       };
 
     case "HANDLE_BOSS_RATE_CHANGE":
@@ -98,7 +100,8 @@ const SearchBarReducer = (state = initState, action) => {
           type: state.filters.type,
           classOfPost: state.filters.classOfPost,
           currentRates: newRatesArr
-        }
+        },
+        clearSidebar: false
       };
 
     case "SET_FULL_LIST_OF_POSTS":
@@ -136,7 +139,7 @@ const SearchBarReducer = (state = initState, action) => {
         ...state,
         filteredListOfPosts: resultArray
       };
-      case "CHANGE_CHECKBOX_STATUS":
+    case "CHANGE_CHECKBOX_STATUS":
       return {
         ...state,
         checkboxOptionStatus: !state.checkboxOptionStatus

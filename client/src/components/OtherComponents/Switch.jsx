@@ -46,9 +46,6 @@ class SwitchExample extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleSwitchClassChange: inputClassOfPost => {
-      dispatch(handleSwitchClassChange(inputClassOfPost));
-    },
     handleSwitchClassChange: inputClass => {
       dispatch(handleSwitchClassChange(inputClass));
     },

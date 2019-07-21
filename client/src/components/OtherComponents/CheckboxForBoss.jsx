@@ -11,6 +11,32 @@ class CheckboxForBoss extends Component {
     };
   }
 
+  handlechange = () => {
+    this.props.handleBossRateChange(this.props.rate);
+    this.props.reRenderMap();
+    this.changeBoxStatus();
+  };
+
+  changeBoxStatus = () => {
+    this.setState({
+      status: !this.state.status
+    });
+  };
+
+  setBoxStatusToFalse = () => {
+    this.setState({
+      status: false
+    });
+  };
+
+  componentDidUpdate(prevprops) {
+    if (this.props !== prevprops) {
+      if (this.props.clearSidebar === true) {
+        this.setBoxStatusToFalse();
+      }
+    }
+  }
+
   render() {
     return (
       <div id="optionsWrapper" className="floatBlock">
@@ -20,10 +46,7 @@ class CheckboxForBoss extends Component {
             id="bossOption"
             name="paymentType"
             type="checkbox"
-            onClick={() => {
-              this.props.handleBossRateChange(this.props.rate);
-              this.props.reRenderMap();
-            }}
+            onChange={this.handlechange}
           />
           <span>{this.props.rate}</span>
         </label>
@@ -43,7 +66,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const mapStateToProps = state => {
+  return {
+    clearSidebar: state.clearSidebar
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(CheckboxForBoss);

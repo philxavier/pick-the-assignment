@@ -1,40 +1,45 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { handleTypeChange, changeCheckboxStatus } from "../../../../store/actions/CheckBoxOptionAction.jsx";
+import {
+  handleTypeChange,
+  changeCheckboxStatus
+} from "../../../../store/actions/CheckBoxOptionAction.jsx";
 import { resetPostFromSearchbar } from "../../../../store/actions/AppAction.jsx";
 import { reRenderMap } from "../../../../store/actions/SimpleMapAction.jsx";
 class CheckboxOption extends Component {
   constructor(props) {
     super(props);
-    this.state ={
-      status:false
-    }
+    this.state = {
+      status: false
+    };
   }
 
   handleChange(postReference) {
     let firstLetter = postReference[0].toLowerCase();
     this.props.handleTypeChange(firstLetter);
     this.props.reRenderMap();
-    this.changeBoxStatus()
+    this.changeBoxStatus();
   }
 
   changeBoxStatus() {
     this.setState({
       status: !this.state.status
-    })
+    });
   }
 
   componentDidUpdate(prevprops) {
-    if (this.props.postFromSearchBar !== prevprops.postFromSearchBar) {
-      changeBoxStatus()
+    if (this.props !== prevprops) {
+      if (this.props.clearSidebar === true) {
+        this.setBoxStatusToFalse();
+      }
     }
   }
 
-  setBoxStatusToFalse() {
+  setBoxStatusToFalse = () => {
     this.setState({
       status: false
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -47,7 +52,7 @@ class CheckboxOption extends Component {
             onChange={() => {
               //this.props.resetPostFromSearchbar();
               //ON CHANGE, WE NEED TO INCLUDE THIS CRITERIA FOR THE FILTERED POSTS ARRAY
-              this.handleChange(this.props.typeOfPost);            
+              this.handleChange(this.props.typeOfPost);
             }}
             style={{ marginRight: "6px" }}
           />
@@ -70,16 +75,16 @@ const mapDispatchToProps = dispatch => {
       dispatch(reRenderMap());
     },
     changeCheckboxStatus() {
-      dispatch(changeCheckboxStatus())
+      dispatch(changeCheckboxStatus());
     }
   };
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    postFromSearchBar:state.postFromSearchBar
-  }
-}
+    postFromSearchBar: state.postFromSearchBar
+  };
+};
 
 export default connect(
   mapStateToProps,

@@ -95,7 +95,6 @@ class SideBar extends Component {
                   key={ind}
                   rate={ele}
                   handleBossRateChange={this.props.handleBossRateChange}
-                  clearSidebar={this.props.clearSidebar}
                 />
               );
             })}
