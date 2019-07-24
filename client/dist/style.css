@@ -6,7 +6,6 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #38304c;
 }
 
 #container {
@@ -73,7 +72,7 @@ input::-webkit-input-placeholder {
 }
 
 .searchbar ul {
-  z-index: 10;
+  /* z-index: 10; */
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -120,7 +119,7 @@ input::-webkit-input-placeholder {
 }
 
 #inputBar {
-  z-index: 10;
+  /* z-index: 10; */
   position: absolute;
   /* top: 28px; */
 }
@@ -178,7 +177,8 @@ input::-webkit-input-placeholder {
 
 .sidebar-buttons {
   margin-top: 5%;
-  justify-content: space-around;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .button-sidebar {
@@ -251,10 +251,10 @@ input::-webkit-input-placeholder {
   width: 120px;
 }
 
-#consulateImg {
+/* #consulateImg {
   position: absolute;
   z-index: 1;
-}
+} */
 
 #typeOfPost {
   color: white;
@@ -270,17 +270,23 @@ input::-webkit-input-placeholder {
   color: green;
 }
 
-.wrapper {
+.type-wrapper {
   text-align: center;
+  border: 1px white solid;
+  border-radius: 15px;
+  width: 75%;
+  margin: 0 auto;
+  padding-top: 4%;
+  padding-bottom: 4%;
 }
-.wrapper ul {
+.type-wrapper ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
   margin-left: 3.5%;
   display: inline-block;
 }
-.wrapper li {
+.type-wrapper li {
   float: left;
   padding: 2px 5px;
 }
@@ -289,6 +295,12 @@ input::-webkit-input-placeholder {
   margin-top: 4%;
   color: white;
   font-family: "Cinzel", serif;
+}
+
+.boss-review {
+  border: white solid 1px;
+  margin: 0 auto;
+  width: 80%;
 }
 
 #optionsContainer {
@@ -312,9 +324,76 @@ input::-webkit-input-placeholder {
 }
 
 span {
-  position: relative;
+  /* position: relative; */
   bottom: 5%;
   margin-left: 5%;
   color: rgb(233, 82, 13);
   font-family: "Cinzel", serif;
+}
+
+/* REACT BURGER MENU =================================================================================================*/
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #b8b7ad;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #a90000;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #373a47;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
 }

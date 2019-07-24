@@ -8,12 +8,33 @@ import { connect } from "react-redux";
 import { clearSidebarConfig } from "../../../../store/actions/SearchbarAction.jsx";
 import { Button, Icon, Dropdown } from "semantic-ui-react";
 // Create the HTML to return for the input
+
+const GroupOfChecboxForBoss = props => {
+  var boxes = [];
+  var bossRatings = ["A", "B", "C", "D", "E", "F"];
+  for (let i = 0; i < bossRatings.length; i++) {
+    boxes.push(
+      <div key={i}>
+        <CheckboxForBoss
+          rate={bossRatings[i]}
+          handleBossRateChange={props.handleBossRateChange}
+        />
+        <CheckboxForBoss
+          rate={bossRatings[i + 1]}
+          handleBossRateChange={props.handleBossRateChange}
+        />
+      </div>
+    );
+    i++;
+  }
+  return boxes;
+};
+
 class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      typeOfPost: ["Embassy", "Consulate", "Other"],
-      bossRatings: ["A", "B", "C", "D", "E", "F"]
+      typeOfPost: ["Embassy", "Consulate", "Other"]
     };
   }
 
@@ -74,7 +95,7 @@ class SideBar extends Component {
             </div>
           </div>
         </div>
-        <div className="wrapper">
+        <div className="type-wrapper">
           <h4 id="typeOfPost">Type of Post</h4>
           <ul>
             {this.state.typeOfPost.map((ele, ind) => {
@@ -90,22 +111,16 @@ class SideBar extends Component {
             })}
           </ul>
         </div>
-        <div className="bossReview">
+        <div className="boss-review">
           <h4 id="bossReview">Boss Review</h4>
           <div
             id="boxContainers"
             name="paymentContainer"
             className="paymentOptions"
           >
-            {this.state.bossRatings.map((ele, ind) => {
-              return (
-                <CheckboxForBoss
-                  key={ind}
-                  rate={ele}
-                  handleBossRateChange={this.props.handleBossRateChange}
-                />
-              );
-            })}
+            <GroupOfChecboxForBoss
+              handleBossRateChange={this.props.handleBossRateChange}
+            />
           </div>
         </div>
       </div>

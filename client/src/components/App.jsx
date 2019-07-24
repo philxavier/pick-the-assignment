@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SimpleMap from "./SimpleMap.jsx";
 import SearchBar from "./OtherComponents/SearchBar.jsx";
 import SideBar from "../components/OtherComponents/SideBar.jsx";
+import SideBar2 from "../components/OtherComponents/SideBar2.jsx";
 import { connect } from "react-redux";
 import { resetPostFromSearchbar } from "../../../store/actions/AppAction.jsx";
 
@@ -21,8 +22,8 @@ class App extends Component {
     let { currentRates, classOfPost, type } = this.props.filters;
     return (
       <div id="container">
+        <SideBar2 />
         <SearchBar handleSearchFromSearchBar={this.handleSearchFromSearchBar} />
-        <SideBar />
         <SimpleMap />
       </div>
     );
