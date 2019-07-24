@@ -28,19 +28,22 @@ class SimpleMap extends Component {
       // Important! Always set the container height explicitly
       <div
         style={{
-          height: "75vh",
-          width: "80%",
-          margin: "0px",
+          height: "80vh",
+          width: "90%",
+          margin: "0 auto",
           background: "#38304C",
           paddingLeft: "5%",
           paddingRight: "5%"
         }}
       >
         <GoogleMapReact
+          //PROVIDE THE GOOGLE API KEY TO THIS PROPERTY. THAT IS HOW THE COMPONENT WORKS
           bootstrapURLKeys={{ key: process.env.google_api }}
+          //SET THE INITIAL CENTER AND ZOOM OF THE MAP
           center={this.props.center}
           zoom={this.props.zoom}
         >
+          {/* THE COMPONENT IS GOING TO LOOP THROUGH FILTEREDLISTOFPOSTS ARRAY AND RENDER THE POSTS ACCORDING TO THE TYPE */}
           {this.props.filteredListOfPosts.map((ele, ind) => {
             if (ele.type.includes("c")) {
               return (

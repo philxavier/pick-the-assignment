@@ -1,153 +1,193 @@
-import React, { Component } from "react"; //Always need in JSX files
-import SwitchExample from "./Switch.jsx";
-import RoundButton from "./Button.jsx";
-import CheckboxOption from "./CheckboxOption.jsx";
-import CheckboxForBoss from "./CheckboxForBoss.jsx";
-import { resetPostFromSearchbar } from "../../../../store/actions/AppAction.jsx";
-import { connect } from "react-redux";
-import { clearSidebarConfig } from "../../../../store/actions/SearchbarAction.jsx";
-import { Button, Icon, Dropdown } from "semantic-ui-react";
-// Create the HTML to return for the input
+import { slide as Menu } from "react-burger-menu";
+import Switch from "./Switch.jsx";
+import React from "react";
+import Button from "./Button.jsx";
+import { Icon } from "semantic-ui-react";
+import CheckBoxOption from "./CheckboxForRate.jsx";
+import CheckBoxForBoss from "./CheckboxForBoss.jsx";
 
-const GroupOfChecboxForBoss = props => {
-  var boxes = [];
-  var bossRatings = ["A", "B", "C", "D", "E", "F"];
-  for (let i = 0; i < bossRatings.length; i++) {
-    boxes.push(
-      <div key={i}>
-        <CheckboxForBoss
-          rate={bossRatings[i]}
-          handleBossRateChange={props.handleBossRateChange}
-        />
-        <CheckboxForBoss
-          rate={bossRatings[i + 1]}
-          handleBossRateChange={props.handleBossRateChange}
-        />
-      </div>
-    );
-    i++;
-  }
-  return boxes;
-};
-
-class SideBar extends Component {
+class Example extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      typeOfPost: ["Embassy", "Consulate", "Other"]
+      category: false,
+      type: false,
+      rate: false
     };
   }
 
-  render() {
+  showSettings(event) {
+    event.preventDefault();
+  }
+
+  changeCategory(e) {
+    e.preventDefault();
+    this.setState({
+      category: !this.state.category
+    });
+  }
+
+  changeType = e => {
+    e.preventDefault();
+    this.setState({
+      type: !this.state.type
+    });
+  };
+
+  changeRate = e => {
+    e.preventDefault();
+    this.setState({
+      rate: !this.state.rate
+    });
+  };
+
+  renderCategory() {
+    var categories = ["a", "b", "c", "d"];
     return (
-      <div className="sidebar">
-        <div className="sidebar-buttons">
-          <Button size="tiny" color="green" icon labelPosition="left">
-            <Icon name="world" />
-            Posts
-          </Button>
-          <Button size="tiny" color="grey" icon labelPosition="left">
-            <Icon name="male" />
-            Boss
-          </Button>
+      <ul>
+        {categories.map((ele, ind) => {
+          return (
+            <div className="container-switch-button2" key={ind}>
+              <Button textValue={ele.toUpperCase()} />
+              <Switch textValue={ele} />
+            </div>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  renderBossRating() {
+    var rates = ["a", "b", "c", "d", "e", "f"];
+    return (
+      <ul>
+        {rates.map((ele, ind) => {
+          return (
+            <div style={{ color: "white" }} key={ind}>
+              <CheckBoxForBoss rate={ele.toUpperCase()} />
+            </div>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  renderType() {
+    var categories = ["Embassy", "Consulate", "Other"];
+    return (
+      <ul>
+        {categories.map((ele, ind) => {
+          return (
+            <div className="container-switch-button2" key={ind}>
+              <CheckBoxOption typeOfPost={ele} />
+            </div>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  render() {
+    let { category, type, rate } = this.state;
+    return (
+      <Menu>
+        <div
+          style={{
+            display: "flex",
+            color: "white",
+            alignItems: "baseline",
+            marginBottom: "3%"
+          }}
+        >
+          <Icon name="filter" size="big" />
+
+          <h2 style={{ color: "white" }}>Filters</h2>
         </div>
 
-        <div id="categoria">
-          <h4 id="categoriaTitle">Post Class</h4>
-          <div id="containerButtonSwitch">
-            <div id="containerSwitch">
-              <RoundButton textValue="A" />
-              <SwitchExample
-                textValue={"a"}
-                handleSwitchClassChange={this.props.handleSwitchClassChange}
-                clearSidebar={this.props.clearSidebar}
-              />
+        <div
+          onClick={e => {
+            this.changeCategory(e);
+          }}
+          style={{ color: "white", cursor: "pointer" }}
+        >
+          <div style={{ color: "white" }} className="label-arrow">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline"
+              }}
+            >
+              <Icon name="trophy" />
+              <h4>Category</h4>
             </div>
-          </div>
-          <div id="containerButtonSwitch">
-            <div id="containerSwitch">
-              <RoundButton textValue="B" />
-              <SwitchExample
-                textValue={"b"}
-                handleSwitchClassChange={this.props.handleSwitchClassChange}
-                clearSidebar={this.props.clearSidebar}
-              />
-            </div>
-          </div>
-          <div id="containerButtonSwitch">
-            <div id="containerSwitch">
-              <RoundButton textValue="C" />
-              <SwitchExample
-                textValue={"c"}
-                handleSwitchClassChange={this.props.handleSwitchClassChange}
-                clearSidebar={this.props.clearSidebar}
-              />
-            </div>
-          </div>
-          <div id="containerButtonSwitch">
-            <div id="containerSwitch">
-              <RoundButton textValue="D" />
-              <SwitchExample
-                textValue={"d"}
-                handleSwitchClassChange={this.props.handleSwitchClassChange}
-                clearSidebar={this.props.clearSidebar}
-              />
-            </div>
+
+            {category ? (
+              <Icon name="arrow alternate circle down outline" />
+            ) : (
+              <Icon name="arrow alternate circle right outline" />
+            )}
           </div>
         </div>
-        <div className="type-wrapper">
-          <h4 id="typeOfPost">Type of Post</h4>
-          <ul>
-            {this.state.typeOfPost.map((ele, ind) => {
-              return (
-                <CheckboxOption
-                  resetPostFromSearchbar={this.props.resetPostFromSearchbar}
-                  handleTypeChange={this.props.handleTypeChange}
-                  key={ind}
-                  typeOfPost={ele}
-                  clearSidebar={this.props.clearSidebar}
-                />
-              );
-            })}
-          </ul>
+        <div className="ul-category-wrapper">
+          {category ? this.renderCategory() : null}
         </div>
-        <div className="boss-review">
-          <h4 id="bossReview">Boss Review</h4>
-          <div
-            id="boxContainers"
-            name="paymentContainer"
-            className="paymentOptions"
-          >
-            <GroupOfChecboxForBoss
-              handleBossRateChange={this.props.handleBossRateChange}
-            />
+        <div
+          onClick={e => {
+            this.changeType(e);
+          }}
+          style={{ color: "white", cursor: "pointer" }}
+        >
+          <div style={{ color: "white" }} className="label-arrow">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline"
+              }}
+            >
+              <Icon name="building" />
+              <h4>Type</h4>
+            </div>
+
+            {type ? (
+              <Icon name="arrow alternate circle down outline" />
+            ) : (
+              <Icon name="arrow alternate circle right outline" />
+            )}
           </div>
         </div>
-      </div>
+        <div className="ul-category-wrapper">
+          {type ? this.renderType() : null}
+        </div>
+        <div
+          onClick={e => {
+            this.changeRate(e);
+          }}
+          style={{ color: "white", cursor: "pointer" }}
+        >
+          <div style={{ color: "white" }} className="label-arrow">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline"
+              }}
+            >
+              <Icon name="user times" />
+              <h4>Boss Rate</h4>
+            </div>
+
+            {rate ? (
+              <Icon name="arrow alternate circle down outline" />
+            ) : (
+              <Icon name="arrow alternate circle right outline" />
+            )}
+          </div>
+        </div>
+        <div className="ul-category-wrapper">
+          {rate ? this.renderBossRating() : null}
+        </div>
+      </Menu>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    resetPostFromSearchbar: () => {
-      dispatch(resetPostFromSearchbar());
-    },
-    clearSidebarConfig: () => {
-      dispatch(clearSidebarConfig());
-    }
-  };
-};
-
-const mapStateToProps = state => {
-  return {
-    clearSidebar: state.clearSidebar,
-    filter: state.filter,
-    fullListOfPosts: state.fullListOfPosts
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SideBar);
+export default Example;

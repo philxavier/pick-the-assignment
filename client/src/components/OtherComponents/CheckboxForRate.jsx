@@ -47,7 +47,7 @@ class CheckboxOption extends Component {
         <li className="radioClass">
           <input
             checked={this.state.status}
-            id="checkbox"
+            // id="checkbox"
             type="checkbox"
             onChange={() => {
               //this.props.resetPostFromSearchbar();

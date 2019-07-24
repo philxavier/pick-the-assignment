@@ -12,18 +12,18 @@ html {
   background: #38304c;
 }
 
-input {
-  margin-top: 2px;
-  -webkit-border-radius: 700px;
-  -moz-border-radius: 700px;
-  border-radius: 70px;
+input[type="checkbox"] {
+  zoom: 1.5;
 }
 
-input::-webkit-input-placeholder {
-  direction: rtl;
-  text-align: center;
-  font-size: 15px;
-  margin-bottom: 2px;
+.radioClass {
+  display: flex;
+  margin-bottom: 2%;
+  line-height: 1.1;
+}
+
+.checkbox-for-rate {
+  background: green;
 }
 
 #root {
@@ -60,19 +60,14 @@ input::-webkit-input-placeholder {
   border-color: rgba(83, 92, 99, 0.2);
   font-family: "Cinzel", serif;
   font-weight: bold;
-  /* font-family: "Aldrich", serif; */
-  /* padding: 1.5%; */
-  /* border-bottom: 1px solid rgba(255, 0, 0, .5); */
-  /* border-bottom: 1px solid rgb(233, 82, 13, 0.2); */
   display: flex;
   justify-content: center;
   margin: 0 auto;
   padding-bottom: 5%;
-  margin-right: 12%;
 }
 
 .searchbar ul {
-  /* z-index: 10; */
+  z-index: 10;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -119,7 +114,7 @@ input::-webkit-input-placeholder {
 }
 
 #inputBar {
-  /* z-index: 10; */
+  z-index: 10;
   position: absolute;
   /* top: 28px; */
 }
@@ -161,15 +156,6 @@ input::-webkit-input-placeholder {
   margin-top: 7%;
   font-family: "Cinzel", serif;
 }
-
-/* .containerSwitch{
-    background: blue;
-    color: white;
-    font-family: 'Cinzel', serif;
-    font-weight: 200;
-    font-size: 25px;
-    margin-top:4%;
-} */
 
 #textCategory1 {
   display: inline;
@@ -240,21 +226,10 @@ input::-webkit-input-placeholder {
   transform: scale(3);
 }
 
-#imgContainer {
-  /* display:inline;
-    width: 120px;
-    float:left */
-}
-
 #cardContainer {
   display: inline;
   width: 120px;
 }
-
-/* #consulateImg {
-  position: absolute;
-  z-index: 1;
-} */
 
 #typeOfPost {
   color: white;
@@ -262,8 +237,7 @@ input::-webkit-input-placeholder {
 }
 
 .checkBoxContainer {
-  color: rgb(233, 82, 13);
-  font-family: "Cinzel", serif;
+  color: white;
 }
 
 #boxOption {
@@ -310,17 +284,12 @@ input::-webkit-input-placeholder {
 
 #optionsWrapper {
   display: inline-flex;
-  margin: 2%;
   text-align: center;
-}
-
-#bossOption {
-  padding: 15px;
-  margin-left: 3px;
 }
 
 #labelWrapper {
   margin-bottom: 5px;
+  margin-left: 6px;
 }
 
 span {
@@ -329,6 +298,47 @@ span {
   margin-left: 5%;
   color: rgb(233, 82, 13);
   font-family: "Cinzel", serif;
+}
+
+.container-switch-button {
+  display: flex;
+  margin-top: 2.5%;
+}
+
+.container-switch-button2 {
+  display: flex;
+}
+
+.button-sidebar2 {
+  color: white;
+  text-align: center;
+  float: left;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  border: solid, white, 4px;
+  background: #1396e8;
+  /* float: left; */
+  /* border: 3px solid white; */
+  bottom: 2px;
+  font-size: 8px;
+  margin-right: 6px;
+}
+
+.ul-category-wrapper {
+}
+
+.ul-category-wrapper ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 5%;
+}
+
+.label-arrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 /* REACT BURGER MENU =================================================================================================*/
@@ -342,12 +352,12 @@ span {
 
 /* Color/shape of burger icon bars */
 .bm-burger-bars {
-  background: #b8b7ad;
+  background: #d65047;
 }
 
 /* Color/shape of burger icon bars on hover*/
 .bm-burger-bars-hover {
-  background: #a90000;
+  background: #b8b7ad;
 }
 
 /* Position and sizing of clickable cross button */
@@ -372,7 +382,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
 /* General sidebar styles */
 .bm-menu {
-  background: #373a47;
+  background: #d65047;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
 }
