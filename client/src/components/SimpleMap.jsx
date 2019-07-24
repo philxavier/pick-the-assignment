@@ -31,8 +31,9 @@ class SimpleMap extends Component {
           height: "75vh",
           width: "80%",
           margin: "0px",
-          background: "#282C34",
-          paddingLeft: "7%"
+          background: "#38304C",
+          paddingLeft: "5%",
+          paddingRight: "5%"
         }}
       >
         <GoogleMapReact
