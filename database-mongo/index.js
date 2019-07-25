@@ -7,7 +7,7 @@ var connectionString = process.env.MONGO_URI;
 
 mongoose
   //connecting to mongo atlas and choosing database
-  .connect("mongodb://localhost:27017/mvp")
+  .connect(connectionString, { dbName: "mvp" })
   .then(() => {
     console.log("Connection to database successfull");
   })
