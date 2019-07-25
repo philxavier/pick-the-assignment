@@ -1,71 +1,27 @@
 import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
-import google_api from "../../../google_api.js";
 import TemplateConsulate from "./TemplateConsulate.jsx";
 import TemplateEmbassy from "./TemplateEmbassy.jsx";
 import TemplateMission from "./TemplateMission.jsx";
 import Axios from "axios";
-import HelperFuncs from "../../../HelperFuncs.js";
+import { connect } from "react-redux";
+import { setFullListOfPosts } from "../../../store/actions/SimpleMapAction.jsx";
+import { Popup } from "semantic-ui-react";
 
 class SimpleMap extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      fullListOfPosts: [],
-      filteredListOfPosts: [],
-      center: this.props.center,
-      zoom: this.props.zoom
-    };
   }
 
   componentDidMount() {
+    //AS SOON AS THE MAP RENDERS, WE GET ALL THE POSTS AND SEND IT TO STATE
     Axios.get("/posts")
       .then(result => {
-        this.setState({
-          fullListOfPosts: result.data
-        });
+        this.props.setFullListOfPosts(result.data);
       })
       .catch(err => {
         console.log("there was an error in component did mount", err);
       });
-  }
-
-  componentDidUpdate(prevProps) {
-    //if props are modified, lets filter the full list of posts and make into filtered list of posts so it can be rendered
-    if (prevProps !== this.props) {
-      let filterOfClass = this.props.classOfPost;
-      let filterOfType = this.props.type;
-      let filterOfRates = this.props.currentRates;
-
-      filterOfClass === undefined ? [] : filterOfClass;
-      filterOfType === undefined ? [] : filterOfType;
-      filterOfRates === undefined ? [] : filterOfRates;
-
-      let filteredArray = this.state.fullListOfPosts.slice();
-
-      let filteredByType = HelperFuncs.filterByType(
-        filteredArray,
-        filterOfType
-      );
-      let filteredByClass = HelperFuncs.filterByClass(
-        filteredArray,
-        filterOfClass
-      );
-      let filteredByRates = HelperFuncs.filterByRates(
-        filteredArray,
-        filterOfRates
-      );
-
-      let resultArray = HelperFuncs.mergeArrays(
-        filteredByClass,
-        filteredByRates,
-        filteredByType
-      );
-
-      this.setState({
-        filteredListOfPosts: resultArray
-      });
-    }
   }
 
   render() {
@@ -73,33 +29,44 @@ class SimpleMap extends Component {
       // Important! Always set the container height explicitly
       <div
         style={{
-          height: "75vh",
-          width: "80%",
-          margin: "0px",
-          background: "#282C34",
-          paddingLeft: "7%"
+          height: "80vh",
+          width: "90%",
+          margin: "0 auto",
+          background: "#38304C",
+          paddingLeft: "5%",
+          paddingRight: "5%"
         }}
       >
         <GoogleMapReact
+          //PROVIDE THE GOOGLE API KEY TO THIS PROPERTY. THAT IS HOW THE COMPONENT WORKS
           bootstrapURLKeys={{ key: process.env.google_api }}
-          center={this.state.center}
-          zoom={this.state.zoom}
+          //SET THE INITIAL CENTER AND ZOOM OF THE MAP
+          center={this.props.center}
+          zoom={this.props.zoom}
         >
-          {this.state.filteredListOfPosts.map((ele, ind) => {
+          {/* THE COMPONENT IS GOING TO LOOP THROUGH FILTEREDLISTOFPOSTS ARRAY AND RENDER THE POSTS ACCORDING TO THE TYPE */}
+          {this.props.filteredListOfPosts.map((ele, ind) => {
             if (ele.type.includes("c")) {
               return (
-                <TemplateConsulate
-                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
-                    ele.name
-                  }.jpg`}
-                  key={ind}
-                  nameOfCity={ele.name}
+                <Popup
+                  content="get to know more"
                   lat={ele.lat}
                   lng={ele.lng}
-                  classPost={ele.class}
-                  cost={ele.cost}
-                  boss={ele.boss}
-                  photos={ele.photos}
+                  trigger={
+                    <TemplateConsulate
+                      src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
+                        ele.name
+                      }.jpg`}
+                      key={ind}
+                      nameOfCity={ele.name}
+                      lat={ele.lat}
+                      lng={ele.lng}
+                      classPost={ele.class}
+                      cost={ele.cost}
+                      boss={ele.boss}
+                      photos={ele.photos}
+                    />
+                  }
                 />
               );
             } else if (ele.type === "e") {
@@ -142,4 +109,31 @@ class SimpleMap extends Component {
   }
 }
 
-export default SimpleMap;
+const mapStateToProps = state => {
+  return {
+    filters: state.filters,
+    postFromSearchbar: state.postFromSearchbar,
+    center: state.center,
+    zoom: state.zoom,
+    type: state.filters.type,
+    classOfPost: state.filters.classOfPost,
+    currentRates: state.filters.currentRates,
+    filteredListOfPosts: state.filteredListOfPosts,
+    fullListOfPosts: state.fullListOfPosts
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    reRenderMap: resultArray => {
+      dispatch(reRenderMap(resultArray));
+    },
+    setFullListOfPosts: fullListOfPosts => {
+      dispatch(setFullListOfPosts(fullListOfPosts));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SimpleMap);

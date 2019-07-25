@@ -1,77 +1,241 @@
-import React, { Component } from 'react'; //Always need in JSX files
-import SwitchExample from "./Switch.jsx";
-import Button from "./Button.jsx"
-import CheckboxOption from './CheckboxOption.jsx'
-import CheckboxForBoss from './CheckboxForBoss.jsx'
+import { slide as Menu } from "react-burger-menu";
+import Switch from "./Switch.jsx";
+import React from "react";
+import Button from "./Button.jsx";
+import { Icon, sta } from "semantic-ui-react";
+import CheckBoxForType from "./CheckboxForType.jsx";
+import CheckBoxForBoss from "./CheckboxForBoss.jsx";
+import { connect } from "react-redux";
+import {
+  clearBossRate,
+  clearClass,
+  clearType
+} from "../../../../store/actions/SideBarAction.jsx";
+import { reRenderMap } from "../../../../store/actions/SimpleMapAction.jsx";
 
-// Create the HTML to return for the input
-class SideBar extends Component {
+class Sidebar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      typeOfPost:['Embassy', 'Consulate', 'Other'],
-      bossRatings:["A", "B", "C", "D", "E", "F"]
+    this.state = {
+      category: false,
+      type: false,
+      rate: false
     };
   }
 
-  render() {
+  componentDidUpdate() {
+    if (!this.state.category) {
+      this.props.clearClass();
+      this.props.reRenderMap();
+    }
 
+    if (!this.state.type) {
+      this.props.clearType();
+      this.props.reRenderMap();
+    }
+
+    if (!this.state.rate) {
+      this.props.clearBossRate();
+      this.props.reRenderMap();
+    }
+  }
+
+  showSettings(event) {
+    event.preventDefault();
+    this.props.reRenderMap();
+  }
+
+  changeCategory(e) {
+    e.preventDefault();
+    this.setState({
+      category: !this.state.category
+    });
+  }
+
+  changeType = e => {
+    e.preventDefault();
+    this.setState({
+      type: !this.state.type
+    });
+  };
+
+  changeRate = e => {
+    e.preventDefault();
+    this.setState({
+      rate: !this.state.rate
+    });
+  };
+
+  renderCategory() {
+    var categories = ["a", "b", "c", "d"];
     return (
-      <div className="sidebar">
-        <div id="sideBarText"> 
-           <h3>Filters</h3>
-        </div>
-        <div id="categoria">
-          <h4 id="categoriaTitle">Post Class</h4>
-          <div id="containerButtonSwitch">
-            <div id="containerSwitch">
-              <SwitchExample textValue={'a'} handleSwitchClassChange={this.props.handleSwitchClassChange}/>
+      <ul>
+        {categories.map((ele, ind) => {
+          return (
+            <div className="container-switch-button2" key={ind}>
+              <Button textValue={ele.toUpperCase()} />
+              <Switch textValue={ele} />
             </div>
-              <Button textValue = 'A' />
-          </div>
-          <div id="containerButtonSwitch">
-            <div id="containerSwitch">
-              <SwitchExample textValue={'b'} handleSwitchClassChange={this.props.handleSwitchClassChange} />
+          );
+        })}
+      </ul>
+    );
+  }
+
+  renderBossRating() {
+    var rates = ["a", "b", "c", "d", "e", "f"];
+    return (
+      <ul>
+        {rates.map((ele, ind) => {
+          return (
+            <div style={{ color: "white" }} key={ind}>
+              <CheckBoxForBoss rate={ele.toUpperCase()} />
             </div>
-              <Button textValue = 'B' />
-          </div>
-          <div id="containerButtonSwitch">
-            <div id="containerSwitch">
-              <SwitchExample textValue={'c'} handleSwitchClassChange={this.props.handleSwitchClassChange}/>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  renderType() {
+    var categories = ["Embassy", "Consulate", "Other"];
+    return (
+      <ul>
+        {categories.map((ele, ind) => {
+          return (
+            <div className="container-switch-button2" key={ind}>
+              <CheckBoxForType typeOfPost={ele} />
             </div>
-              <Button textValue = 'C' />
-          </div>
-          <div id="containerButtonSwitch">
-            <div id="containerSwitch">
-              <SwitchExample textValue={'d'} handleSwitchClassChange={this.props.handleSwitchClassChange} />
+          );
+        })}
+      </ul>
+    );
+  }
+
+  render() {
+    let { category, type, rate } = this.state;
+    return (
+      <Menu>
+        <div
+          style={{
+            display: "flex",
+            color: "white",
+            alignItems: "baseline",
+            marginBottom: "3%"
+          }}
+        >
+          <Icon name="filter" size="big" />
+
+          <h2 style={{ color: "white" }}>Filters</h2>
+        </div>
+
+        <div
+          onClick={e => {
+            this.changeCategory(e);
+          }}
+          style={{ color: "white", cursor: "pointer" }}
+        >
+          <div style={{ color: "white" }} className="label-arrow">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline"
+              }}
+            >
+              <Icon name="trophy" />
+              <h4>Category</h4>
             </div>
-              <Button textValue = 'D' />
+
+            {category ? (
+              <Icon name="arrow alternate circle down outline" />
+            ) : (
+              <Icon name="arrow alternate circle right outline" />
+            )}
           </div>
         </div>
-        <div className="wrapper">
-          <h4 id="typeOfPost">Type of Post</h4>
-          <ul>
-            {this.state.typeOfPost.map((ele, ind) => {
-              return <CheckboxOption handleTypeChange={this.props.handleTypeChange} key={ind} typeOfPost={ele}/>
-            })} 
-          </ul>
+        <div className="ul-category-wrapper">
+          {category ? this.renderCategory() : null}
         </div>
-        <div className="bossReview">
-          <h4 id="bossReview">Boss Review</h4>
-          <div id="boxContainers" name="paymentContainer" className="paymentOptions">
-                {this.state.bossRatings.map((ele, ind) => {
-                  return <CheckboxForBoss key = {ind} rate={ele} handleBossRateChange={this.props.handleBossRateChange} />
-                })}
+        <div
+          onClick={e => {
+            this.changeType(e);
+          }}
+          style={{ color: "white", cursor: "pointer" }}
+        >
+          <div style={{ color: "white" }} className="label-arrow">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline"
+              }}
+            >
+              <Icon name="building" />
+              <h4>Type</h4>
+            </div>
+
+            {type ? (
+              <Icon name="arrow alternate circle down outline" />
+            ) : (
+              <Icon name="arrow alternate circle right outline" />
+            )}
           </div>
         </div>
-      </div>
+        <div className="ul-category-wrapper">
+          {type ? this.renderType() : null}
+        </div>
+        <div
+          onClick={e => {
+            this.changeRate(e);
+          }}
+          style={{ color: "white", cursor: "pointer" }}
+        >
+          <div style={{ color: "white" }} className="label-arrow">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline"
+              }}
+            >
+              <Icon name="user times" />
+              <h4>Boss Rate</h4>
+            </div>
+
+            {rate ? (
+              <Icon name="arrow alternate circle down outline" />
+            ) : (
+              <Icon name="arrow alternate circle right outline" />
+            )}
+          </div>
+        </div>
+        <div className="ul-category-wrapper">
+          {rate ? this.renderBossRating() : null}
+        </div>
+      </Menu>
     );
   }
 }
 
-// SideBar.protoTypes = {
-//   callback : PropTypes.func,
-// }
+const mapDispatchToProps = dispatch => {
+  return {
+    clearType: () => {
+      dispatch(clearType());
+    },
 
-//We need to export to index.js to display
-export default SideBar;
+    clearClass: () => {
+      dispatch(clearClass());
+    },
+
+    clearBossRate: () => {
+      dispatch(clearBossRate());
+    },
+
+    reRenderMap: () => {
+      dispatch(reRenderMap());
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Sidebar);
