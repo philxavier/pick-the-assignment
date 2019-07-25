@@ -3,10 +3,17 @@ import Switch from "./Switch.jsx";
 import React from "react";
 import Button from "./Button.jsx";
 import { Icon, sta } from "semantic-ui-react";
-import CheckBoxOption from "./CheckboxForRate.jsx";
+import CheckBoxForType from "./CheckboxForType.jsx";
 import CheckBoxForBoss from "./CheckboxForBoss.jsx";
+import { connect } from "react-redux";
+import {
+  clearBossRate,
+  clearClass,
+  clearType
+} from "../../../../store/actions/SideBarAction.jsx";
+import { reRenderMap } from "../../../../store/actions/SimpleMapAction.jsx";
 
-class Example extends React.Component {
+class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,8 +23,26 @@ class Example extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    if (!this.state.category) {
+      this.props.clearClass();
+      this.props.reRenderMap();
+    }
+
+    if (!this.state.type) {
+      this.props.clearType();
+      this.props.reRenderMap();
+    }
+
+    if (!this.state.rate) {
+      this.props.clearBossRate();
+      this.props.reRenderMap();
+    }
+  }
+
   showSettings(event) {
     event.preventDefault();
+    this.props.reRenderMap();
   }
 
   changeCategory(e) {
@@ -79,7 +104,7 @@ class Example extends React.Component {
         {categories.map((ele, ind) => {
           return (
             <div className="container-switch-button2" key={ind}>
-              <CheckBoxOption typeOfPost={ele} />
+              <CheckBoxForType typeOfPost={ele} />
             </div>
           );
         })}
@@ -190,4 +215,27 @@ class Example extends React.Component {
   }
 }
 
-export default Example;
+const mapDispatchToProps = dispatch => {
+  return {
+    clearType: () => {
+      dispatch(clearType());
+    },
+
+    clearClass: () => {
+      dispatch(clearClass());
+    },
+
+    clearBossRate: () => {
+      dispatch(clearBossRate());
+    },
+
+    reRenderMap: () => {
+      dispatch(reRenderMap());
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Sidebar);

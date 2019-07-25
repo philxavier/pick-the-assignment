@@ -75,6 +75,7 @@ const SearchBarReducer = (state = initState, action) => {
         }
       };
     case "HANDLE_TYPE_CHANGE":
+      debugger;
       let newTypeOfPost = state.filters.type.slice();
 
       HelperFuncs.buildNewTypeOfPost(newTypeOfPost, action.payload);
@@ -116,7 +117,6 @@ const SearchBarReducer = (state = initState, action) => {
       let filterOfRates = state.filters.currentRates;
 
       let filteredArray = state.fullListOfPosts.slice();
-
       let filteredByType = HelperFuncs.filterByType(
         filteredArray,
         filterOfType
@@ -143,6 +143,35 @@ const SearchBarReducer = (state = initState, action) => {
       return {
         ...state,
         checkboxOptionStatus: !state.checkboxOptionStatus
+      };
+
+    case "CLEAR_TYPE":
+      return {
+        ...state,
+        filters: {
+          type: [],
+          classOfPost: state.filters.classOfPost,
+          currentRates: state.filters.currentRates
+        }
+      };
+    case "CLEAR_CLASS":
+      return {
+        ...state,
+        filters: {
+          type: state.filters.type,
+          classOfPost: [],
+          currentRates: state.filters.currentRates
+        }
+      };
+
+    case "CLEAR_BOSS_RATE":
+      return {
+        ...state,
+        filters: {
+          type: state.filters.type,
+          classOfPost: state.filters.classOfPost,
+          currentRates: []
+        }
       };
 
     default:
