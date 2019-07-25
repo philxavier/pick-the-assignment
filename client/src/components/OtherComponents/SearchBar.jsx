@@ -1,4 +1,4 @@
-import { Icon, Input } from "semantic-ui-react";
+import { Icon, Input, Statistic } from "semantic-ui-react";
 import React, { Component } from "react";
 import { World } from "styled-icons/boxicons-regular/World";
 import Axios from "axios";
@@ -114,6 +114,22 @@ class SearchBar extends Component {
             </OutsideClickHandler>
           ) : null}
         </div>
+        <div
+          style={{
+            position: "absolute",
+            zIndex: "2",
+            marginLeft: "40%",
+            top: "2%",
+            color: "white"
+          }}
+        >
+          <Statistic color="red">
+            <Statistic.Value>
+              {this.props.filteredListOfPosts.length}
+            </Statistic.Value>
+            <p style={{ margin: "0 auto" }}>Posts</p>
+          </Statistic>
+        </div>
       </div>
     );
   }
@@ -145,7 +161,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     barValue: state.barValue,
-    fetchedPosts: state.fetchedPosts
+    fetchedPosts: state.fetchedPosts,
+    filteredListOfPosts: state.filteredListOfPosts
   };
 };
 

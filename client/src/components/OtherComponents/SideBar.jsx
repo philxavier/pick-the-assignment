@@ -2,7 +2,7 @@ import { slide as Menu } from "react-burger-menu";
 import Switch from "./Switch.jsx";
 import React from "react";
 import Button from "./Button.jsx";
-import { Icon } from "semantic-ui-react";
+import { Icon, sta } from "semantic-ui-react";
 import CheckBoxOption from "./CheckboxForRate.jsx";
 import CheckBoxForBoss from "./CheckboxForBoss.jsx";
 
