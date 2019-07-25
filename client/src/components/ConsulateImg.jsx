@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Image, Popup } from "semantic-ui-react";
+import { Image } from "semantic-ui-react";
 import { Header, Modal } from "semantic-ui-react";
 import { Divider } from "semantic-ui-react";
 import Gallery from "react-grid-gallery";
-import { Weight } from "styled-icons/fa-solid";
 
 const PlaceHolder = ({ ...rest }) => (
   <div
