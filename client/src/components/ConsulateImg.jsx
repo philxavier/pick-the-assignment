@@ -1,26 +1,17 @@
 import React, { Component, useState, useEffect } from "react";
 import ModalForConsulate from "./OtherComponents/ModalForConsulate.jsx";
-import { Popup, Rating } from "semantic-ui-react";
+
 export default class consulateImg extends Component {
   constructor(props) {
     super(props);
     this.state = {
       card: false,
-      placeHolder: false,
-      disabled: false
+      placeHolder: false
     };
-
-    this.myRef = React.createRef();
 
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
-
-  setDisabledToTrue = () => {
-    this.setState({
-      disabled: true
-    });
-  };
 
   handleMouseEnter() {
     let result;
@@ -49,14 +40,11 @@ export default class consulateImg extends Component {
     let { src, nameOfCity, boss, cost, classPost, photos } = this.props;
     return (
       <div>
-        <Popup content="test" context={this.myRef} />
         <div
           ref={this.myRef}
           id="imgContainer"
           className="consulateStyle grow"
           onMouseEnter={this.handleMouseEnter}
-          // onClick={this.handleClick}
-          // onMouseLeave={this.handleMouseLeave}
         >
           {this.state.placeHolder ? (
             <div>

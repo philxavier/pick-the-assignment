@@ -47,10 +47,6 @@ export default class ModalComponent extends Component {
   render() {
     return (
       <Modal
-        onMouseMove={() => {
-          debugger;
-          this.props.setDisabledToTrue();
-        }}
         onClose={() => {
           this.props.handleMouseLeave();
         }}
