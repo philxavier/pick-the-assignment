@@ -15,7 +15,6 @@ class CheckboxOption extends Component {
   }
 
   handleChange(postReference) {
-    debugger;
     let firstLetter = postReference[0].toLowerCase();
     this.props.handleTypeChange(firstLetter);
     this.props.reRenderMap();
@@ -83,7 +82,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    postFromSearchBar: state.postFromSearchBar
+    postFromSearchBar: state.postFromSearchBar,
+    clearSidebar: state.clearSidebar
   };
 };
 

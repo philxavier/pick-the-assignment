@@ -106,6 +106,8 @@ const ModalComponent = props => (
     </Modal.Content>
   </Modal>
 );
+import React, { Component, useState, useEffect } from "react";
+import ModalForConsulate from "./OtherComponents/ModalForConsulate.jsx";
 
 export default class consulateImg extends Component {
   constructor(props) {
@@ -137,7 +139,8 @@ export default class consulateImg extends Component {
 
   handleMouseLeave() {
     this.setState({
-      placeHolder: !this.state.placeHolder
+      placeHolder: !this.state.placeHolder,
+      disabled: false
     });
   }
 
@@ -146,21 +149,25 @@ export default class consulateImg extends Component {
     return (
       <div>
         <div
+          ref={this.myRef}
           id="imgContainer"
           className="consulateStyle grow"
           onMouseEnter={this.handleMouseEnter}
-          //  onMouseLeave = {this.handleMouseLeave}
         >
           {this.state.placeHolder ? (
-            <ModalComponent
-              photos={photos}
-              src={src}
-              nameOfCity={nameOfCity}
-              boss={boss}
-              cost={cost}
-              classPost={classPost}
-              handleMouseLeave={this.handleMouseLeave}
-            />
+            <div>
+              <ModalForConsulate
+                onMouseOver={this.handleMouseOver}
+                photos={photos}
+                src={src}
+                nameOfCity={nameOfCity}
+                boss={boss}
+                cost={cost}
+                classPost={classPost}
+                handleMouseLeave={this.handleMouseLeave}
+                setDisabledToTrue={this.setDisabledToTrue}
+              />
+            </div>
           ) : null}
 
           <img
