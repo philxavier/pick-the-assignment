@@ -1,7 +1,12 @@
 import React, { Component } from "react";
-import { Image, Popup } from "semantic-ui-react";
-import { Header, Modal } from "semantic-ui-react";
-import { Divider } from "semantic-ui-react";
+import {
+  Image,
+  Popup,
+  Rating,
+  Header,
+  Modal,
+  Divider
+} from "semantic-ui-react";
 import Gallery from "react-grid-gallery";
 
 const PlaceHolder = ({ ...rest }) => (
@@ -13,6 +18,9 @@ const PlaceHolder = ({ ...rest }) => (
 
 const ModalComponent = props => (
   <Modal
+    onMouseEnter={() => {
+      props.mouseEnterForModal;
+    }}
     onClose={() => {
       props.handleMouseLeave();
     }}
@@ -117,6 +125,11 @@ export default class EmbassyImg extends Component {
 
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.mouseEnterForModal = this.mouseEnterForModal.bind(this);
+  }
+
+  mouseEnterForModal() {
+    alert("ooooooooi");
   }
 
   handleMouseEnter() {
@@ -153,15 +166,31 @@ export default class EmbassyImg extends Component {
           //  onMouseLeave = {this.handleMouseLeave}
         >
           {this.state.placeHolder ? (
-            <ModalComponent
-              photos={photos}
-              src={src}
-              nameOfCity={nameOfCity}
-              boss={boss}
-              cost={cost}
-              classPost={classPost}
-              handleMouseLeave={this.handleMouseLeave}
-            />
+            <Popup
+              content="testing"
+              on={["hover", "click"]}
+              inverted
+              trigger={
+                <div>
+                  <ModalComponent
+                    mouseEnterForModal={this.mouseEnterForModal}
+                    onClick={this.handleClick}
+                    photos={photos}
+                    src={src}
+                    nameOfCity={nameOfCity}
+                    boss={boss}
+                    cost={cost}
+                    classPost={classPost}
+                    handleMouseLeave={this.handleMouseLeave}
+                  />
+                </div>
+              }
+            >
+              <Popup.Header>Embaixada do Brasil em {nameOfCity}</Popup.Header>
+              <Popup.Content>
+                <Rating icon="star" defaultRating={3} maxRating={5} />
+              </Popup.Content>
+            </Popup>
           ) : null}
           <img
             id="consulateImg"

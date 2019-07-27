@@ -1,4 +1,4 @@
-import { Icon, Input, Statistic } from "semantic-ui-react";
+import { Icon, Input, Statistic, Button, Popup } from "semantic-ui-react";
 import React, { Component } from "react";
 import { World } from "styled-icons/boxicons-regular/World";
 import Axios from "axios";
@@ -118,7 +118,7 @@ class SearchBar extends Component {
           style={{
             position: "absolute",
             zIndex: "2",
-            marginLeft: "40%",
+            marginLeft: "36%",
             top: "2%",
             color: "white"
           }}
@@ -129,6 +129,25 @@ class SearchBar extends Component {
             </Statistic.Value>
             <p style={{ margin: "0 auto" }}>Posts</p>
           </Statistic>
+        </div>
+
+        <div style={{ position: "absolute", marginLeft: "43%" }}>
+          <Popup
+            content="Map Overview"
+            trigger={
+              <Button color="green" icon>
+                <Icon color="black" name="world" />
+              </Button>
+            }
+          />
+          <Popup
+            content="Boss Rankings"
+            trigger={
+              <Button color="grey" icon>
+                <Icon color="black" name="male" />
+              </Button>
+            }
+          />
         </div>
       </div>
     );

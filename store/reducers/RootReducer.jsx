@@ -75,7 +75,6 @@ const SearchBarReducer = (state = initState, action) => {
         }
       };
     case "HANDLE_TYPE_CHANGE":
-      debugger;
       let newTypeOfPost = state.filters.type.slice();
 
       HelperFuncs.buildNewTypeOfPost(newTypeOfPost, action.payload);
@@ -155,14 +154,21 @@ const SearchBarReducer = (state = initState, action) => {
         }
       };
     case "CLEAR_CLASS":
-      return {
-        ...state,
-        filters: {
-          type: state.filters.type,
-          classOfPost: [],
-          currentRates: state.filters.currentRates
-        }
-      };
+      if (state.clearSidebar === true) {
+        return {
+          ...state,
+          filteredListOfPosts: state.filteredListOfPosts
+        };
+      } else {
+        return {
+          ...state,
+          filters: {
+            type: state.filters.type,
+            classOfPost: [],
+            currentRates: state.filters.currentRates
+          }
+        };
+      }
 
     case "CLEAR_BOSS_RATE":
       return {

@@ -2,7 +2,7 @@ import { slide as Menu } from "react-burger-menu";
 import Switch from "./Switch.jsx";
 import React from "react";
 import Button from "./Button.jsx";
-import { Icon, sta } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import CheckBoxForType from "./CheckboxForType.jsx";
 import CheckBoxForBoss from "./CheckboxForBoss.jsx";
 import { connect } from "react-redux";
@@ -12,6 +12,8 @@ import {
   clearType
 } from "../../../../store/actions/SideBarAction.jsx";
 import { reRenderMap } from "../../../../store/actions/SimpleMapAction.jsx";
+
+//LOGICl ONCLICK - CHANGE THE STATE - COMPONENT DID UPDATE DETECTS STATE CHANGE AND RE RENDERS MAP
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -23,20 +25,32 @@ class Sidebar extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    if (!this.state.category) {
-      this.props.clearClass();
-      this.props.reRenderMap();
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.category !== prevState.category) {
+      if (!this.state.category) {
+        this.props.clearClass();
+        if (!this.props.clearSidebar) {
+          this.props.reRenderMap();
+        }
+      }
     }
 
-    if (!this.state.type) {
-      this.props.clearType();
-      this.props.reRenderMap();
+    if (this.state.type !== prevState.type) {
+      if (!this.state.type) {
+        this.props.clearType();
+        if (!this.props.clearSidebar) {
+          this.props.reRenderMap();
+        }
+      }
     }
 
-    if (!this.state.rate) {
-      this.props.clearBossRate();
-      this.props.reRenderMap();
+    if (this.state.rate !== prevState.rate) {
+      if (!this.state.rate) {
+        this.props.clearBossRate();
+        if (!this.props.clearSidebar) {
+          this.props.reRenderMap();
+        }
+      }
     }
   }
 
@@ -235,7 +249,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const mapStateToProps = state => {
+  return {
+    clearSidebar: state.clearSidebar
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Sidebar);

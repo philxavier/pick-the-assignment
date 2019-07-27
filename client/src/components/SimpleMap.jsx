@@ -48,25 +48,18 @@ class SimpleMap extends Component {
           {this.props.filteredListOfPosts.map((ele, ind) => {
             if (ele.type.includes("c")) {
               return (
-                <Popup
-                  content="get to know more"
+                <TemplateConsulate
+                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
+                    ele.name
+                  }.jpg`}
+                  key={ind}
+                  nameOfCity={ele.name}
                   lat={ele.lat}
                   lng={ele.lng}
-                  trigger={
-                    <TemplateConsulate
-                      src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
-                        ele.name
-                      }.jpg`}
-                      key={ind}
-                      nameOfCity={ele.name}
-                      lat={ele.lat}
-                      lng={ele.lng}
-                      classPost={ele.class}
-                      cost={ele.cost}
-                      boss={ele.boss}
-                      photos={ele.photos}
-                    />
-                  }
+                  classPost={ele.class}
+                  cost={ele.cost}
+                  boss={ele.boss}
+                  photos={ele.photos}
                 />
               );
             } else if (ele.type === "e") {
