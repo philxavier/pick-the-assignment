@@ -10,7 +10,10 @@ var connectionString = process.env.MONGO_URI;
 
 mongoose
   //connecting to mongo atlas and choosing database
-  .connect(connectionString, { dbName: "mvp" })
+  .connect(
+    "mongodb+srv://fsxl:Secreta1@cluster0-vmxgf.mongodb.net/test?retryWrites=true&w=majority",
+    { dbName: "mvp" }
+  )
   .then(() => {
     console.log("Connection to database successfull");
   })
