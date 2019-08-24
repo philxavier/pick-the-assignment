@@ -10,7 +10,7 @@ var connectionString = process.env.MONGO_URI;
 
 mongoose
   //connecting to mongo atlas and choosing database
-  .connect(connectionString, { dbName: "mvp" })
+  .connect(connectionString, { dbName: "mvp", useNewUrlParser: true })
   .then(() => {
     console.log("Connection to database successfull");
   })
@@ -45,6 +45,8 @@ const postSchema = mongoose.Schema(
   },
   { strict: false }
 );
+
+//TO CREATE A MODEL, REMEMBER, YOU PASS IN THE NAME OF THE MODEL (YOU PICK ANY NAME) AND THE SCHEMA
 
 const postModel = mongoose.model("Post", postSchema);
 

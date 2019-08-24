@@ -79,6 +79,11 @@ class SearchBar extends Component {
     let { barValue } = this.props;
     return (
       <div className="searchbar">
+        <img
+          className="logo"
+          src="https://mvp-sprint.s3-us-west-1.amazonaws.com/logo+pick+the+assignment.png"
+          alt=""
+        />
         <div id="inputBar">
           <Input
             value={barValue}

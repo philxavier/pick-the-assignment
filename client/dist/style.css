@@ -399,3 +399,13 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
+
+.logo {
+  height: 75px;
+  width: 155px;
+  display: absolute;
+  position: absolute;
+  z-index: 2;
+  left: 8%;
+  top: 2%;
+}
