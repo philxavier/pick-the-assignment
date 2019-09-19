@@ -60,9 +60,10 @@ input[type="checkbox"] {
   border-color: rgba(83, 92, 99, 0.2);
   font-weight: bold;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
   margin: 0 auto;
-  padding-bottom: 5%;
+  padding-bottom: 1%;
   color: #d65047;
 }
 
@@ -115,6 +116,10 @@ input[type="checkbox"] {
 #inputBar {
   z-index: 10;
   position: absolute;
+  /* width: 100%; */
+  margin-left: 43%;
+  text-align: center;
+  top: 6%;
   /* top: 28px; */
 }
 
@@ -404,7 +409,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
   height: 75px;
   width: 155px;
   display: absolute;
-  position: absolute;
+  /* position: absolute; */
   z-index: 2;
   left: 8%;
   top: 2%;

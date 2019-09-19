@@ -78,12 +78,7 @@ class SearchBar extends Component {
   render() {
     let { barValue } = this.props;
     return (
-      <div className="searchbar">
-        <img
-          className="logo"
-          src="https://mvp-sprint.s3-us-west-1.amazonaws.com/logo+pick+the+assignment.png"
-          alt=""
-        />
+      <div>
         <div id="inputBar">
           <Input
             value={barValue}
@@ -119,41 +114,6 @@ class SearchBar extends Component {
             </OutsideClickHandler>
           ) : null}
         </div>
-        <div
-          style={{
-            position: "absolute",
-            zIndex: "2",
-            marginLeft: "36%",
-            top: "2%",
-            color: "white"
-          }}
-        >
-          <Statistic color="red">
-            <Statistic.Value>
-              {this.props.filteredListOfPosts.length}
-            </Statistic.Value>
-            <p style={{ margin: "0 auto" }}>Posts</p>
-          </Statistic>
-        </div>
-
-        <div style={{ position: "absolute", marginLeft: "43%" }}>
-          <Popup
-            content="Map Overview"
-            trigger={
-              <Button color="green" icon>
-                <Icon color="black" name="world" />
-              </Button>
-            }
-          />
-          <Popup
-            content="Boss Rankings"
-            trigger={
-              <Button color="grey" icon>
-                <Icon color="black" name="male" />
-              </Button>
-            }
-          />
-        </div>
       </div>
     );
   }
@@ -185,8 +145,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     barValue: state.barValue,
-    fetchedPosts: state.fetchedPosts,
-    filteredListOfPosts: state.filteredListOfPosts
+    fetchedPosts: state.fetchedPosts
   };
 };
 

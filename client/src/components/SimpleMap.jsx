@@ -6,7 +6,7 @@ import TemplateMission from "./TemplateMission.jsx";
 import Axios from "axios";
 import { connect } from "react-redux";
 import { setFullListOfPosts } from "../../../store/actions/SimpleMapAction.jsx";
-import { Popup } from "semantic-ui-react";
+import { Popup, Statistic, Button, Icon } from "semantic-ui-react";
 
 class SimpleMap extends Component {
   constructor(props) {
@@ -34,9 +34,58 @@ class SimpleMap extends Component {
           margin: "0 auto",
           background: "#38304C",
           paddingLeft: "5%",
-          paddingRight: "5%"
+          paddingRight: "5%",
+          paddingTop: "1.5%"
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <img
+            className="logo"
+            src="https://mvp-sprint.s3-us-west-1.amazonaws.com/logo+pick+the+assignment.png"
+            alt=""
+          />
+          <div
+            style={{
+              // background: "blue",
+              display: "flex",
+              alignItems: "center",
+              width: "16%",
+              justifyContent: "space-between",
+              color: "#DB2828"
+            }}
+          >
+            <Statistic color="red">
+              <Statistic.Value>
+                {this.props.filteredListOfPosts.length}
+              </Statistic.Value>
+              <p style={{ margin: "0 auto" }}>Posts</p>
+            </Statistic>
+            <div style={{}}>
+              <Popup
+                content="Map Overview"
+                trigger={
+                  <Button color="green" icon>
+                    <Icon color="black" name="world" />
+                  </Button>
+                }
+              />
+              <Popup
+                content="Boss Rankings"
+                trigger={
+                  <Button color="grey" icon>
+                    <Icon color="black" name="male" />
+                  </Button>
+                }
+              />
+            </div>
+          </div>
+        </div>
         <GoogleMapReact
           //PROVIDE THE GOOGLE API KEY TO THIS PROPERTY. THAT IS HOW THE COMPONENT WORKS
           bootstrapURLKeys={{ key: process.env.google_api }}
@@ -49,9 +98,7 @@ class SimpleMap extends Component {
             if (ele.type.includes("c")) {
               return (
                 <TemplateConsulate
-                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
-                    ele.name
-                  }.jpg`}
+                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${ele.name}.jpg`}
                   key={ind}
                   nameOfCity={ele.name}
                   lat={ele.lat}
@@ -65,9 +112,7 @@ class SimpleMap extends Component {
             } else if (ele.type === "e") {
               return (
                 <TemplateEmbassy
-                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
-                    ele.name
-                  }.jpg`}
+                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${ele.name}.jpg`}
                   key={ind}
                   nameOfCity={ele.name}
                   lat={ele.lat}
@@ -81,9 +126,7 @@ class SimpleMap extends Component {
             } else {
               return (
                 <TemplateMission
-                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
-                    ele.name
-                  }.jpg`}
+                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${ele.name}.jpg`}
                   key={ind}
                   nameOfCity={ele.name}
                   lat={ele.lat}
