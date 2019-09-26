@@ -37,7 +37,7 @@ class SwitchExample extends Component {
           width={50}
           onChange={this.handleChange}
           checked={this.state.checked}
-          onColor="#E9520D"
+          onColor="#1396e8"
         />
       </label>
     );

@@ -1,4 +1,4 @@
-import { Icon, Input } from "semantic-ui-react";
+import { Icon, Input, Statistic, Button, Popup } from "semantic-ui-react";
 import React, { Component } from "react";
 import { World } from "styled-icons/boxicons-regular/World";
 import Axios from "axios";
@@ -78,7 +78,7 @@ class SearchBar extends Component {
   render() {
     let { barValue } = this.props;
     return (
-      <div className="searchbar">
+      <div>
         <div id="inputBar">
           <Input
             value={barValue}

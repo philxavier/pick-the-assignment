@@ -6,6 +6,7 @@ import TemplateMission from "./TemplateMission.jsx";
 import Axios from "axios";
 import { connect } from "react-redux";
 import { setFullListOfPosts } from "../../../store/actions/SimpleMapAction.jsx";
+import { Popup, Statistic, Button, Icon } from "semantic-ui-react";
 
 class SimpleMap extends Component {
   constructor(props) {
@@ -28,26 +29,80 @@ class SimpleMap extends Component {
       // Important! Always set the container height explicitly
       <div
         style={{
-          height: "75vh",
-          width: "80%",
-          margin: "0px",
+          height: "80vh",
+          width: "90%",
+          margin: "0 auto",
           background: "#38304C",
           paddingLeft: "5%",
-          paddingRight: "5%"
+          paddingRight: "5%",
+          paddingTop: "1.5%"
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <img
+            className="logo"
+            src="https://mvp-sprint.s3-us-west-1.amazonaws.com/logo+pick+the+assignment.png"
+            alt=""
+          />
+          <div
+            style={{
+              // background: "blue",
+              display: "flex",
+              alignItems: "center",
+              width: "16%",
+              justifyContent: "space-between",
+              color: "#DB2828"
+            }}
+          >
+            <Statistic color="red">
+              <Statistic.Value>
+                {this.props.filteredListOfPosts.length}
+              </Statistic.Value>
+              <p style={{ margin: "0 auto" }}>Posts</p>
+            </Statistic>
+            <div style={{ display: "flex" }}>
+              <div>
+                <Popup
+                  content="Map Overview"
+                  trigger={
+                    <Button color="green" icon>
+                      <Icon color="black" name="world" />
+                    </Button>
+                  }
+                />
+              </div>
+              <div style={{}}>
+                <Popup
+                  content="Boss Rankings"
+                  trigger={
+                    <Button color="grey" icon>
+                      <Icon color="black" name="male" />
+                    </Button>
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        </div>
         <GoogleMapReact
+          //PROVIDE THE GOOGLE API KEY TO THIS PROPERTY. THAT IS HOW THE COMPONENT WORKS
           bootstrapURLKeys={{ key: process.env.google_api }}
+          //SET THE INITIAL CENTER AND ZOOM OF THE MAP
           center={this.props.center}
           zoom={this.props.zoom}
         >
+          {/* THE COMPONENT IS GOING TO LOOP THROUGH FILTEREDLISTOFPOSTS ARRAY AND RENDER THE POSTS ACCORDING TO THE TYPE */}
           {this.props.filteredListOfPosts.map((ele, ind) => {
             if (ele.type.includes("c")) {
               return (
                 <TemplateConsulate
-                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
-                    ele.name
-                  }.jpg`}
+                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${ele.name}.jpg`}
                   key={ind}
                   nameOfCity={ele.name}
                   lat={ele.lat}
@@ -61,9 +116,7 @@ class SimpleMap extends Component {
             } else if (ele.type === "e") {
               return (
                 <TemplateEmbassy
-                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
-                    ele.name
-                  }.jpg`}
+                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${ele.name}.jpg`}
                   key={ind}
                   nameOfCity={ele.name}
                   lat={ele.lat}
@@ -72,14 +125,13 @@ class SimpleMap extends Component {
                   cost={ele.cost}
                   boss={ele.boss}
                   photos={ele.photos}
+                  reviews={ele.review}
                 />
               );
             } else {
               return (
                 <TemplateMission
-                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${
-                    ele.name
-                  }.jpg`}
+                  src={`https://s3-us-west-1.amazonaws.com/mvp-sprint/${ele.name}.jpg`}
                   key={ind}
                   nameOfCity={ele.name}
                   lat={ele.lat}

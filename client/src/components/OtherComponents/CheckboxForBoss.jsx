@@ -40,15 +40,16 @@ class CheckboxForBoss extends Component {
   render() {
     return (
       <div id="optionsWrapper" className="floatBlock">
-        <label id="labelWrapper">
-          <input
-            checked={this.state.status}
-            id="bossOption"
-            name="paymentType"
-            type="checkbox"
-            onChange={this.handlechange}
-          />
-          <span>{this.props.rate}</span>
+        <input
+          className="checkbox-for-rate"
+          checked={this.state.status}
+          id="bossOption"
+          name="paymentType"
+          type="checkbox"
+          onChange={this.handlechange}
+        />
+        <label style={{ marginRight: "6px" }} id="labelWrapper">
+          {this.props.rate}
         </label>
       </div>
     );

@@ -1,13 +1,16 @@
 /* eslint-disable linebreak-style */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const mongoose = require("mongoose");
-// var config = require('../mongo.config.js');
+var config = require("../mongo.config.js");
+//I THINK I HAVE MANUALLY SET CONNECTION STRING TO THE RIGHT URI, WHICH IS THE STRING AT MONGO.CONFIG.JS
 
-var connectionString = process.env.MONGO_URI;
+//WHAT TO USE DURING DEPLOYMENT: '.connect(process.env.MONGO_URI, { dbName: 'mvp' })'
+
+// var connectionString = process.env.MONGO_URI;
 
 mongoose
   //connecting to mongo atlas and choosing database
-  .connect("mongodb://localhost:27017/mvp")
+  .connect(config.URI, { dbName: "mvp", useNewUrlParser: true })
   .then(() => {
     console.log("Connection to database successfull");
   })
@@ -29,6 +32,7 @@ const postSchema = mongoose.Schema(
     class: String,
     type: String,
     boss: Array,
+    review: Array,
     cost: {
       costOfLivingIndex: Number,
       rentIndex: Number,
@@ -42,6 +46,8 @@ const postSchema = mongoose.Schema(
   },
   { strict: false }
 );
+
+//TO CREATE A MODEL, REMEMBER, YOU PASS IN THE NAME OF THE MODEL (YOU PICK ANY NAME) AND THE SCHEMA
 
 const postModel = mongoose.model("Post", postSchema);
 
@@ -86,8 +92,28 @@ let findWithRegex = input => {
   });
 };
 
-module.exports.db = db;
-module.exports.postModel = postModel;
-module.exports.selectAll = selectAll;
-module.exports.findOne = findOne;
-module.exports.findWithRegex = findWithRegex;
+let insertReview = (inputReview, postName, type) => {
+  return new Promise((resolve, reject) => {
+    postModel.updateOne(
+      { name: postName, type: type },
+      { $push: { review: inputReview } },
+      { upsert: true, setDefaultsOnInsert: true },
+      (err, resp) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(resp);
+        }
+      }
+    );
+  });
+};
+
+module.exports = {
+  db,
+  postModel,
+  selectAll,
+  findOne,
+  findWithRegex,
+  insertReview
+};

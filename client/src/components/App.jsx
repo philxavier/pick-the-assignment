@@ -17,12 +17,12 @@ class App extends Component {
     });
   }
 
+  //HERE WE RENDER THE 3 MAIN COMPONENTS SIMPLE MAP, SIDE BAR AND SEARCH BAR
   render() {
-    let { currentRates, classOfPost, type } = this.props.filters;
     return (
       <div id="container">
-        <SearchBar handleSearchFromSearchBar={this.handleSearchFromSearchBar} />
         <SideBar />
+        <SearchBar handleSearchFromSearchBar={this.handleSearchFromSearchBar} />
         <SimpleMap />
       </div>
     );

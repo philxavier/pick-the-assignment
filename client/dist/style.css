@@ -6,25 +6,24 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #38304c;
 }
 
 #container {
   background: #38304c;
 }
 
-input {
-  margin-top: 2px;
-  -webkit-border-radius: 700px;
-  -moz-border-radius: 700px;
-  border-radius: 70px;
+input[type="checkbox"] {
+  zoom: 1.5;
 }
 
-input::-webkit-input-placeholder {
-  direction: rtl;
-  text-align: center;
-  font-size: 15px;
-  margin-bottom: 2px;
+.radioClass {
+  display: flex;
+  margin-bottom: 2%;
+  line-height: 1.1;
+}
+
+.checkbox-for-rate {
+  background: green;
 }
 
 #root {
@@ -59,17 +58,13 @@ input::-webkit-input-placeholder {
 .searchbar {
   padding-top: 2%;
   border-color: rgba(83, 92, 99, 0.2);
-  font-family: "Cinzel", serif;
   font-weight: bold;
-  /* font-family: "Aldrich", serif; */
-  /* padding: 1.5%; */
-  /* border-bottom: 1px solid rgba(255, 0, 0, .5); */
-  /* border-bottom: 1px solid rgb(233, 82, 13, 0.2); */
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
   margin: 0 auto;
-  padding-bottom: 5%;
-  margin-right: 12%;
+  padding-bottom: 1%;
+  color: #d65047;
 }
 
 .searchbar ul {
@@ -77,6 +72,7 @@ input::-webkit-input-placeholder {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  color: #d65047;
 }
 
 .searchbar li:hover {
@@ -108,20 +104,22 @@ input::-webkit-input-placeholder {
   text-align: left;
   list-style-type: none;
   background: white;
-  font-family: "Cinzel", serif;
   font-weight: bold;
-  color: rgb(233, 82, 13);
+  color: #d65047;
 }
 
 #text-logo {
   margin-top: 0;
-  font-family: "Cinzel", serif;
   color: rgb(233, 82, 13);
 }
 
 #inputBar {
   z-index: 10;
   position: absolute;
+  /* width: 100%; */
+  margin-left: 43%;
+  text-align: center;
+  top: 6%;
   /* top: 28px; */
 }
 
@@ -142,35 +140,23 @@ input::-webkit-input-placeholder {
   position: relative;
   top: 50%;
   transform: translateY(-30%);
-  font-family: "Cinzel", serif;
 }
 
 #titulo {
   margin-top: 0px;
-  font-family: "Cinzel", serif;
 }
 
 #sideBarText {
   margin-top: 7%;
   text-align: center;
   font-family: "Aldrich", serif;
-  color: rgb(233, 82, 13);
+  color: #d65047;
 }
 
 #categoriaTitle {
   color: white;
   margin-top: 7%;
-  font-family: "Cinzel", serif;
 }
-
-/* .containerSwitch{
-    background: blue;
-    color: white;
-    font-family: 'Cinzel', serif;
-    font-weight: 200;
-    font-size: 25px;
-    margin-top:4%;
-} */
 
 #textCategory1 {
   display: inline;
@@ -178,7 +164,8 @@ input::-webkit-input-placeholder {
 
 .sidebar-buttons {
   margin-top: 5%;
-  justify-content: space-around;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .button-sidebar {
@@ -240,47 +227,40 @@ input::-webkit-input-placeholder {
   transform: scale(3);
 }
 
-#imgContainer {
-  /* display:inline;
-    width: 120px;
-    float:left */
-}
-
 #cardContainer {
   display: inline;
   width: 120px;
 }
 
-#consulateImg {
-  position: absolute;
-  z-index: 1;
-}
-
 #typeOfPost {
   color: white;
-  font-family: "Cinzel", serif;
 }
 
 .checkBoxContainer {
-  color: rgb(233, 82, 13);
-  font-family: "Cinzel", serif;
+  color: white;
 }
 
 #boxOption {
   color: green;
 }
 
-.wrapper {
+.type-wrapper {
   text-align: center;
+  border: 1px white solid;
+  border-radius: 15px;
+  width: 75%;
+  margin: 0 auto;
+  padding-top: 4%;
+  padding-bottom: 4%;
 }
-.wrapper ul {
+.type-wrapper ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
   margin-left: 3.5%;
   display: inline-block;
 }
-.wrapper li {
+.type-wrapper li {
   float: left;
   padding: 2px 5px;
 }
@@ -288,33 +268,149 @@ input::-webkit-input-placeholder {
 #bossReview {
   margin-top: 4%;
   color: white;
-  font-family: "Cinzel", serif;
+}
+
+.boss-review {
+  border: white solid 1px;
+  margin: 0 auto;
+  width: 80%;
 }
 
 #optionsContainer {
   color: white;
-  font-family: "Cinzel", serif;
 }
 
 #optionsWrapper {
   display: inline-flex;
-  margin: 2%;
   text-align: center;
-}
-
-#bossOption {
-  padding: 15px;
-  margin-left: 3px;
 }
 
 #labelWrapper {
   margin-bottom: 5px;
+  margin-left: 6px;
 }
 
 span {
-  position: relative;
+  /* position: relative; */
   bottom: 5%;
   margin-left: 5%;
-  color: rgb(233, 82, 13);
-  font-family: "Cinzel", serif;
+  color: #d65047;
+}
+
+.container-switch-button {
+  display: flex;
+  margin-top: 2.5%;
+}
+
+.container-switch-button2 {
+  display: flex;
+}
+
+.button-sidebar2 {
+  color: white;
+  text-align: center;
+  float: left;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  border: solid, white, 4px;
+  background: #1396e8;
+  /* float: left; */
+  /* border: 3px solid white; */
+  bottom: 2px;
+  font-size: 8px;
+  margin-right: 6px;
+}
+
+.ul-category-wrapper {
+}
+
+.ul-category-wrapper ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 5%;
+}
+
+.label-arrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+/* REACT BURGER MENU =================================================================================================*/
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #d65047;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #b8b7ad;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #d65047;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+  height: 75px;
+  width: 155px;
+  display: absolute;
+  /* position: absolute; */
+  z-index: 2;
+  left: 8%;
+  top: 2%;
 }
