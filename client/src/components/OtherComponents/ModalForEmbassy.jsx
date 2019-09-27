@@ -60,7 +60,6 @@ export default class ModalComponent extends Component {
   }
 
   openBossReviewModal() {
-    alert("oifffeof");
     this.setState({
       statusBossReviewModal: true
     });
@@ -160,6 +159,7 @@ export default class ModalComponent extends Component {
                   Leave a review for this boss
                 </Button>
                 <BossReviewModal
+                  infos={{ ...this.props }}
                   open={this.state.statusBossReviewModal}
                   close={this.closeBossReviewModal}
                 />
@@ -204,6 +204,7 @@ export default class ModalComponent extends Component {
                     Leave a review for this post
                   </Button>
                   <PostReviewModal
+                    infos={{ ...this.props }}
                     open={this.state.statusPostReviewModal}
                     close={this.closePostReviewModal}
                   />

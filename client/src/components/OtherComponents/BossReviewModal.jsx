@@ -3,11 +3,12 @@ import { Button, Header, Icon, Image, Modal } from "semantic-ui-react";
 
 const BossReviewModal = props => (
   <Modal open={props.open} onClose={() => props.close()} closeIcon>
-    <Modal.Header>Profile Picture</Modal.Header>
+    <Modal.Header>Review for {props.infos.boss[0]}</Modal.Header>
     <Modal.Content image scrolling>
       <Image
         size="medium"
-        src="https://react.semantic-ui.com/images/wireframe/image.png"
+        src="https://mvp-sprint.s3-us-west-1.amazonaws.com/michaelGif.gif
+        "
         wrapped
       />
 
