@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import { Message } from "semantic-ui-react";
 
-const Calendar = () => {
+const Calendar = props => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [showWarning, setWarning] = useState(false);
@@ -47,7 +47,7 @@ const Calendar = () => {
     }
 
     if (t2 < t1) {
-      setMessage1("This dates are not good!");
+      setMessage1("These dates are not good!");
       setMessage2("The final date should be after the initial date");
       setWarning(true);
       setEndDate("");
@@ -59,6 +59,8 @@ const Calendar = () => {
 
     setEndDate(endDate);
     setStartDate(startDate);
+
+    props.retrieveDates(startDate, endDate);
   };
 
   const displayWarning = (message1, message2) => {

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import Axios from "axios";
+import React, { Component, useState } from "react";
+import axios from "axios";
 import {
   Image,
   Popup,
@@ -11,7 +11,9 @@ import {
   Form,
   TextArea,
   Input,
-  Icon
+  Icon,
+  Loader,
+  Progress
 } from "semantic-ui-react";
 
 import Gallery from "react-grid-gallery";
@@ -19,9 +21,41 @@ import PostReviewModal from "./PostReviewModal.jsx";
 import BossReviewModal from "./BossReviewModal.jsx";
 
 const PlaceHolder = ({ ...rest }) => {
+  let [rating, setRating] = useState(0);
+  let [loading, setLoading] = useState(false);
+
+  let displayRightRating = () => {
+    if (rating === 0) {
+      return <p>No reviews yet</p>;
+    } else {
+      return (
+        <div
+          style={{ textAlign: "center", margin: "0 auto", marginTop: "2px" }}
+        >
+          <Rating icon="star" defaultRating={rating} maxRating={5} />
+        </div>
+      );
+    }
+  };
+
   var props = Object.assign({}, { ...rest });
   return (
     <Popup
+      onOpen={() => {
+        setLoading(true);
+        axios.get(`/review/${props.nameOfCity}/e`).then(resp => {
+          let reviewsArray = resp.data[0].review;
+          if (reviewsArray.length === 0) {
+            return;
+          } else {
+            let reviews = reviewsArray.reduce((accum, ele) => {
+              return accum + ele.currentRating;
+            }, 0);
+            reviews = (reviews / reviewsArray.length).toFixed(1);
+            setRating(reviews);
+          }
+        });
+      }}
       inverted
       trigger={
         <div>
@@ -37,9 +71,131 @@ const PlaceHolder = ({ ...rest }) => {
         </div>
       }
     >
-      <Popup.Header>Embaixada do Brasil em {props.nameOfCity}</Popup.Header>
+      <Popup.Header>
+        Embaixada do Brasil em {props.nameOfCity} : {rating}
+      </Popup.Header>
       <Popup.Content>
-        <Rating icon="star" defaultRating={3} maxRating={4} />
+        <div style={{ display: "flex" }}>{displayRightRating()}</div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "10% 90%"
+          }}
+        >
+          <div style={{ display: "flex" }}>
+            <span> {"\u{1F4B5}"}</span>
+            <p></p>
+          </div>
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                width: "100%",
+                position: "absolute",
+                bottom: "-16px"
+              }}
+            >
+              <Progress
+                size="small"
+                percent={20}
+                color="red"
+                label="Salary/Cost"
+                inverted
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: "22px",
+            display: "grid",
+            gridTemplateColumns: "10% 90%"
+          }}
+        >
+          <div style={{ display: "flex" }}>
+            <span> {"\u{1F46E}"}</span>
+            <p></p>
+          </div>
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                width: "100%",
+                position: "absolute",
+                bottom: "-16px"
+              }}
+            >
+              <Progress
+                size="small"
+                percent={70}
+                color="green"
+                label="Safety"
+                inverted
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: "22px",
+            display: "grid",
+            gridTemplateColumns: "10% 90%"
+          }}
+        >
+          <div style={{ display: "flex" }}>
+            <span> {"\u{1F60E}"}</span>
+            <p></p>
+          </div>
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                width: "100%",
+                position: "absolute",
+                bottom: "-16px"
+              }}
+            >
+              <Progress
+                size="small"
+                percent={60}
+                color="yellow"
+                label="Fun"
+                inverted
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: "22px",
+            display: "grid",
+            gridTemplateColumns: "10% 90%",
+            marginBottom: "22px"
+          }}
+        >
+          <div style={{ display: "flex" }}>
+            <span> {"\u{1F454}"}</span>
+            <p></p>
+          </div>
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                width: "100%",
+                position: "absolute",
+                bottom: "-16px"
+              }}
+            >
+              <Progress
+                size="small"
+                percent={90}
+                color="green"
+                label="Boss"
+                inverted
+              />
+            </div>
+          </div>
+        </div>
       </Popup.Content>
     </Popup>
   );
@@ -50,7 +206,8 @@ export default class ModalComponent extends Component {
     super(props);
     this.state = {
       statusPostReviewModal: false,
-      statusBossReviewModal: false
+      statusBossReviewModal: false,
+      reviews: null
     };
 
     this.openPostReviewModal = this.openPostReviewModal.bind(this);
@@ -80,6 +237,22 @@ export default class ModalComponent extends Component {
   closePostReviewModal() {
     this.setState({
       statusPostReviewModal: false
+    });
+  }
+
+  componentDidMount() {
+    var city = this.props.nameOfCity;
+    var type = "e";
+    axios.get(`/review/${city}/${type}`).then(result => {
+      console.log("this is result", result);
+      if (result.data.length === 0) {
+        return;
+      } else {
+        console.log("this is the review", result.data[0].review);
+        this.setState({
+          reviews: result.data[0].review
+        });
+      }
     });
   }
 
@@ -204,6 +377,7 @@ export default class ModalComponent extends Component {
                     Leave a review for this post
                   </Button>
                   <PostReviewModal
+                    reviews={this.state.reviews}
                     infos={{ ...this.props }}
                     open={this.state.statusPostReviewModal}
                     close={this.closePostReviewModal}

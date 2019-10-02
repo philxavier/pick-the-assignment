@@ -48,15 +48,33 @@ app.get("/findPost/:name", (req, res) => {
     });
 });
 
-app.get("findPostRegular/:name");
+app.get("/review/:name/:type", (req, res) => {
+  let city = req.params.name;
+  let type = req.params.type;
+  findReviews(city, type)
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log("there was an error in the server", err);
+      res.status.send(404);
+    });
+});
 
 app.post("/review", (req, res) => {
-  let reviewText = req.body.review;
-  let postName = req.body.postName;
-  let type = req.body.type;
-  insertReview(reviewText, postName, type)
+  let {
+    textAreaContent,
+    date1,
+    date2,
+    currentRating,
+    type,
+    postName
+  } = req.body;
+
+  insertReview(textAreaContent, date1, date2, currentRating, postName, type)
     .then(result => {
       console.log("successfull insertion!");
+      res.end();
     })
     .catch(err => {
       console.log("there was an error", err);

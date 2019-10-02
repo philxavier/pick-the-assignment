@@ -92,7 +92,20 @@ let findWithRegex = input => {
   });
 };
 
-let insertReview = (inputReview, postName, type) => {
+let insertReview = (
+  textAreaContent,
+  date1,
+  date2,
+  currentRating,
+  postName,
+  type
+) => {
+  var inputReview = {
+    textAreaContent,
+    date1,
+    date2,
+    currentRating
+  };
   return new Promise((resolve, reject) => {
     postModel.updateOne(
       { name: postName, type: type },
@@ -106,6 +119,18 @@ let insertReview = (inputReview, postName, type) => {
         }
       }
     );
+  });
+};
+
+findReviews = (city, type) => {
+  return new Promise((resolve, reject) => {
+    postModel.find({ name: city, type: type }, "review", (err, resp) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(resp);
+      }
+    });
   });
 };
 
