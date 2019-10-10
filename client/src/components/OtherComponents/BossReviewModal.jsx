@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Header, Icon, Image, Modal } from "semantic-ui-react";
+import { Button, Header, Icon, Image, Modal, Rating } from "semantic-ui-react";
 
 const BossReviewModal = props => (
   <Modal open={props.open} onClose={() => props.close()} closeIcon>
@@ -13,11 +13,17 @@ const BossReviewModal = props => (
       />
 
       <Modal.Description>
-        <Header>Modal Header</Header>
-        <p>
-          This is an example of expanded content that will cause the modal's
-          dimmer to scroll
-        </p>
+        <Header>How would you rate this Boss?</Header>
+        <div style={{ display: "flex" }}>
+          <Button color="green" active>
+            A
+          </Button>
+          <Button active>B</Button>
+          <Button active>C</Button>
+          <Button active>D</Button>
+          <Button active>E</Button>
+          <Button active>F</Button>
+        </div>
       </Modal.Description>
     </Modal.Content>
     <Modal.Actions>

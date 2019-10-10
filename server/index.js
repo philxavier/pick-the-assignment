@@ -4,6 +4,7 @@ let selectAll = require("../database-mongo/index.js").selectAll;
 let findOne = require("../database-mongo/index.js").findOne;
 let findWithRegex = require("../database-mongo/index.js").findWithRegex;
 let insertReview = require("../database-mongo/index.js").insertReview;
+let findBoss = require("../database-mongo/index.js").findBoss;
 let compression = require("compression");
 let PORT = process.env.PORT || 3001;
 const bodyParser = require("body-parser");
@@ -61,19 +62,42 @@ app.get("/review/:name/:type", (req, res) => {
     });
 });
 
+app.get("/boss/:name/:type", (req, res) => {
+  let city = req.params.name;
+  let type = req.params.type;
+  findBoss(city, type)
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log("there was an error in the server", err);
+      res.status.send(404);
+    });
+});
+
 app.post("/review", (req, res) => {
   let {
     textAreaContent,
-    date1,
-    date2,
-    currentRating,
+    cost,
+    dates,
+    workPlaceRating,
+    fun,
+    safety,
     type,
     postName
   } = req.body;
 
-  insertReview(textAreaContent, date1, date2, currentRating, postName, type)
+  insertReview(
+    textAreaContent,
+    dates,
+    cost,
+    workPlaceRating,
+    fun,
+    safety,
+    type,
+    postName
+  )
     .then(result => {
-      console.log("successfull insertion!");
       res.end();
     })
     .catch(err => {

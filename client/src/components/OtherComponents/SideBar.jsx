@@ -97,7 +97,7 @@ class Sidebar extends React.Component {
   }
 
   renderBossRating() {
-    var rates = ["a", "b", "c", "d", "e", "f"];
+    var rates = ["a", "b", "c", "d", "e"];
     return (
       <ul>
         {rates.map((ele, ind) => {

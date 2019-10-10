@@ -98,6 +98,7 @@ class SimpleMap extends Component {
           zoom={this.props.zoom}
         >
           {/* THE COMPONENT IS GOING TO LOOP THROUGH FILTEREDLISTOFPOSTS ARRAY AND RENDER THE POSTS ACCORDING TO THE TYPE */}
+          {console.log(this.props.filteredListOfPosts)}
           {this.props.filteredListOfPosts.map((ele, ind) => {
             if (ele.type.includes("c")) {
               return (

@@ -18,7 +18,11 @@ class ReviewModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentRating: null,
+      overallRating: null,
+      cost: null,
+      fun: null,
+      workPlaceRating: null,
+      safety: null,
       submited: false,
       textAreaContent: "",
       date1: null,
@@ -37,6 +41,11 @@ class ReviewModal extends React.Component {
       this
     );
     this.calculatedAverage = this.calculatedAverage.bind(this);
+
+    this.costRef = React.createRef();
+    this.funRef = React.createRef();
+    this.workPlaceRatingRef = React.createRef();
+    this.safetyRef = React.createRef();
   }
 
   handleChange(e) {
@@ -75,8 +84,8 @@ class ReviewModal extends React.Component {
       <div>
         <Message
           warning
-          header="How about the rating?"
-          content="Let's see how  this place would rate in your opinion."
+          header="Don't forget to complete all the ratings!"
+          content="Let's see how this place would rate in your opinion."
         />
       </div>
     );
@@ -105,6 +114,10 @@ class ReviewModal extends React.Component {
   }
 
   calculatedAverage() {
+    if (!this.state.retrievedRate) {
+      return 0;
+    }
+
     let sumOfRatings = this.state.retrievedRate.reduce((accum, ele) => {
       return accum + ele.currentRating;
     }, 0);
@@ -115,19 +128,15 @@ class ReviewModal extends React.Component {
   }
 
   validateDataForSubmition() {
-    let { textAreaContent, date1, date2, currentRating } = this.state;
-
-    if (!currentRating) {
-      this.setState({
-        ratingNotCompleteOnSubmit: true
-      });
-      setTimeout(() => {
-        this.setState({
-          ratingNotCompleteOnSubmit: false
-        });
-      }, 3500);
-      return;
-    }
+    let {
+      textAreaContent,
+      date1,
+      date2,
+      cost,
+      safety,
+      workPlaceRating,
+      fun
+    } = this.state;
 
     if (!date1 || !date2) {
       this.setState({
@@ -137,7 +146,19 @@ class ReviewModal extends React.Component {
         this.setState({
           dateNotCompleteOnSubmit: false
         });
-      }, 3500);
+      }, 3000);
+      return;
+    }
+
+    if (!cost || !safety || !workPlaceRating || !fun) {
+      this.setState({
+        ratingNotCompleteOnSubmit: true
+      });
+      setTimeout(() => {
+        this.setState({
+          ratingNotCompleteOnSubmit: false
+        });
+      }, 3000);
       return;
     }
 
@@ -149,7 +170,7 @@ class ReviewModal extends React.Component {
         this.setState({
           textAreaNotCompleteOnSubmit: false
         });
-      }, 3500);
+      }, 3000);
       return;
     }
 
@@ -161,16 +182,22 @@ class ReviewModal extends React.Component {
       this.setState({
         showSuccessMessage: true
       });
+    } else {
+      return;
     }
 
     let fullReview = {
-      currentRating: this.state.currentRating,
-      date1: this.state.date1,
-      date2: this.state.date2,
+      cost: this.state.cost,
+      dates: [this.state.date1, this.state.date2],
+      workPlaceRating: this.state.workPlaceRating,
+      fun: this.state.fun,
       textAreaContent: this.state.textAreaContent,
       type: "e",
-      postName: this.props.infos.nameOfCity
+      postName: this.props.infos.nameOfCity,
+      safety: this.state.safety
     };
+
+    console.log("this is the review", fullReview);
 
     axios
       .post("/review", fullReview)
@@ -207,10 +234,30 @@ class ReviewModal extends React.Component {
     });
   }
 
-  handleRate(e, { rating, maxRating }) {
-    this.setState({
-      currentRating: rating
-    });
+  handleRate(e, { rating, maxRating, value }) {
+    console.log("this is value", value);
+    this.setState(
+      {
+        [value]: rating
+      },
+      () => {
+        let { cost, fun, workPlaceRating, safety } = this.state;
+
+        if (
+          cost !== null &&
+          fun !== null &&
+          workPlaceRating !== null &&
+          safety !== null
+        ) {
+          var average = cost + fun + workPlaceRating + safety;
+          average = (average / 4).toFixed(1);
+
+          this.setState({
+            overallRating: average
+          });
+        }
+      }
+    );
   }
 
   render() {
@@ -233,20 +280,23 @@ class ReviewModal extends React.Component {
               src="https://mvp-sprint.s3-us-west-1.amazonaws.com/postReviewImg.gif"
               wrapped
             />
-            <h2>Current evaluation is:</h2>
-            {this.props.reviews.length !== 0 ? (
+            <h2>Current evaluation is: </h2>
+            {!this.props.reviews ? (
               <div>
-                <Header as="h2">
-                  {typeof this.state.retrievedRate === "string"
-                    ? this.state.retrievedRate
-                    : this.calculatedAverage()}
-                  <div>
-                    <Header.Content>Stars</Header.Content>
-                    <Header.Subheader>
-                      Total of {this.props.reviews.length} reviews
-                    </Header.Subheader>
-                  </div>
-                </Header>
+                <Statistic color="yellow">
+                  <Statistic.Value>
+                    {typeof this.state.retrievedRate === "string"
+                      ? this.state.retrievedRate
+                      : this.calculatedAverage()}
+                  </Statistic.Value>
+                  <Statistic.Label>stars</Statistic.Label>
+                </Statistic>
+
+                <div>
+                  <Header.Subheader>
+                    {this.state.reviews ? this.state.reviews.cost.length : null}
+                  </Header.Subheader>
+                </div>
               </div>
             ) : (
               <Header>There are no reviews yet</Header>
@@ -255,8 +305,17 @@ class ReviewModal extends React.Component {
           {!this.state.showSuccessMessage ? (
             <Modal.Description>
               <div>
-                <Header>How would you rate this Post</Header>
+                <Header>What period of time did you work here?</Header>
+                <div>
+                  <div>
+                    <Calendar retrieveDates={this.retrieveDates} />
+                  </div>
+                </div>
+
+                <Header>How would you rate safety in this Post</Header>
                 <Rating
+                  ref={this.safetyRef}
+                  value="safety"
                   clearable
                   size="huge"
                   icon="star"
@@ -264,21 +323,55 @@ class ReviewModal extends React.Component {
                   maxRating={5}
                   onRate={this.handleRate}
                 />
-
-                {this.state.ratingNotCompleteOnSubmit ? (
-                  <div>{this.revealWarningForRating()}</div>
-                ) : null}
               </div>
+              <Header>
+                Was it expensive or cheap?
+                <Header.Subheader>
+                  take into account the salary x cost of living relationship on
+                  this one
+                </Header.Subheader>
+              </Header>
+              <Rating
+                ref={this.costRef}
+                value="cost"
+                clearable
+                size="huge"
+                icon="star"
+                defaultRating={0}
+                maxRating={5}
+                onRate={this.handleRate}
+              />
 
-              <Header>What period of time did you work here?</Header>
-              <div>
-                <div>
-                  <Calendar retrieveDates={this.retrieveDates} />
-                </div>
-              </div>
-              {this.state.dateNotCompleteOnSubmit
-                ? this.revealWarningForDate()
-                : null}
+              <Header>How fun was this place? Cool city?</Header>
+              <Rating
+                ref={this.funRef}
+                value="fun"
+                clearable
+                size="huge"
+                icon="star"
+                defaultRating={0}
+                maxRating={5}
+                onRate={this.handleRate}
+              />
+
+              <Header>
+                How was the work?
+                <Header.Subheader>
+                  take into account work environment, personnel, and ammount of
+                  work
+                </Header.Subheader>
+              </Header>
+              <Rating
+                ref={this.workPlaceRatingRef}
+                value="workPlaceRating"
+                clearable
+                size="huge"
+                icon="star"
+                defaultRating={0}
+                maxRating={5}
+                onRate={this.handleRate}
+              />
+
               <Header>Tell us a little about you experience here</Header>
               <Form>
                 <TextArea
@@ -291,6 +384,23 @@ class ReviewModal extends React.Component {
               {this.state.textAreaNotCompleteOnSubmit
                 ? this.revealWarningForTextArea()
                 : null}
+              <Header>
+                <div style={{ marginBottom: "10px" }}>
+                  The average evaluation you have given is:
+                  {!this.state.overallRating ? (
+                    <Header as="h4" color="red">
+                      No reviews yet
+                    </Header>
+                  ) : (
+                    <Statistic>
+                      <Statistic.Value>
+                        {this.state.overallRating}
+                      </Statistic.Value>
+                      <Statistic.Label> Stars</Statistic.Label>
+                    </Statistic>
+                  )}
+                </div>
+              </Header>
             </Modal.Description>
           ) : (
             this.revealSuccessSubmissionMessage()
@@ -300,6 +410,16 @@ class ReviewModal extends React.Component {
           <Button onClick={this.handleSubmit} color="green">
             Submit <Icon name="chevron right" />
           </Button>
+          {this.state.dateNotCompleteOnSubmit ? (
+            <div style={{ textAlign: "left" }}>
+              {this.revealWarningForDate()}
+            </div>
+          ) : null}
+          {this.state.ratingNotCompleteOnSubmit ? (
+            <div style={{ textAlign: "left" }}>
+              {this.revealWarningForRating()}
+            </div>
+          ) : null}
         </Modal.Actions>
       </Modal>
     );

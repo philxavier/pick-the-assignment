@@ -2,6 +2,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const mongoose = require("mongoose");
 var config = require("../mongo.config.js");
+const bossList = require("./bossList");
+const namesOfCities = require("./postsString").namesOfCities;
 //I THINK I HAVE MANUALLY SET CONNECTION STRING TO THE RIGHT URI, WHICH IS THE STRING AT MONGO.CONFIG.JS
 
 //WHAT TO USE DURING DEPLOYMENT: '.connect(process.env.MONGO_URI, { dbName: 'mvp' })'
@@ -32,7 +34,6 @@ const postSchema = mongoose.Schema(
     class: String,
     type: String,
     boss: Array,
-    review: Array,
     cost: {
       costOfLivingIndex: Number,
       rentIndex: Number,
@@ -41,6 +42,7 @@ const postSchema = mongoose.Schema(
       restaurantPriceIndex: Number,
       localPurchasePowerIndex: Number
     },
+    reviewsByUser: Array,
     lat: Number,
     lng: Number
   },
@@ -61,6 +63,29 @@ let selectAll = () => {
       }
     });
   });
+};
+
+let insertBoss = async () => {
+  // let includeBoss = async () => {
+  //   for (let i = 0; i < namesOfCities.length; i++) {
+  //     await postModel.update({}, { $push: { boss: "john" } }, (err, res) => {
+  //       if (err) {
+  //         console.log("there was an error", err);
+  //       } else {
+  //         console.log("this is good");
+  //       }
+  //     });
+  //   }
+  // };
+
+  // includeBoss();
+
+  for (let i = 0; i < bossList.length; i++) {
+    await postModel.updateOne(
+      { name: namesOfCities[i] },
+      { $addToSet: { boss: bossList[i][0] } }
+    );
+  }
 };
 
 let findOne = inputPost => {
@@ -92,29 +117,105 @@ let findWithRegex = input => {
   });
 };
 
+let delteReviewByUser = () => {
+  postModel.updateMany({}, { $unset: { reviewsByUser: "" } }, (err, res) => {
+    if (err) {
+      console.log("there was an error performing this one", err);
+    } else {
+      console.log("success!");
+    }
+  });
+};
+
+let updateBoss = () => {
+  postModel
+    .updateMany({}, { $unset: { boss: 1 } }, (err, res) => {
+      if (err) {
+        console.log("there was an error performing this one", err);
+      } else {
+        console.log("success!");
+      }
+    })
+    .then(() => {
+      for (let i = 0; i < namesOfCities.length; i++) {
+        postModel.updateOne(
+          { name: namesOfCities[i] },
+          { $set: { boss: [bossList[i][0], bossList[i][1]] } },
+          (err, res) => {
+            if (err) {
+              console.log("there was an error performing this one", err);
+            } else {
+              console.log("success adding boss!");
+            }
+          }
+        );
+      }
+    });
+};
+
+let insertReviewsByUser = () => {
+  postModel.updateMany(
+    {},
+    { $set: { reviewsByUser: Array } },
+    { multi: true },
+    (err, res) => {
+      if (err) {
+        console.log("there was an error performing this one", err);
+      } else {
+        console.log("success!");
+      }
+    }
+  );
+};
+
+let test = () => {
+  postModel.updateOne(
+    { name: "Washington", type: "e" },
+    { $push: { reviewsByUser: "test" } },
+    { upsert: true },
+    (err, res) => {
+      if (err) {
+        console.log("there was an error");
+      } else {
+        console.log("things went well");
+      }
+    }
+  );
+};
+
 let insertReview = (
   textAreaContent,
-  date1,
-  date2,
-  currentRating,
-  postName,
-  type
+  dates,
+  cost,
+  workPlaceRating,
+  fun,
+  safety,
+  type,
+  postName
 ) => {
   var inputReview = {
     textAreaContent,
-    date1,
-    date2,
-    currentRating
+    dates,
+    cost,
+    fun,
+    workPlaceRating,
+    safety
   };
+  console.log(inputReview);
+  console.log("type", type);
+  console.log("name", postName);
+
   return new Promise((resolve, reject) => {
     postModel.updateOne(
       { name: postName, type: type },
-      { $push: { review: inputReview } },
-      { upsert: true, setDefaultsOnInsert: true },
+      { $push: { reviewsByUser: inputReview } },
+      { upsert: true, multi: true },
       (err, resp) => {
         if (err) {
+          console.log("there wasa an error", err);
           reject(err);
         } else {
+          console.log("things went well");
           resolve(resp);
         }
       }
@@ -124,7 +225,7 @@ let insertReview = (
 
 findReviews = (city, type) => {
   return new Promise((resolve, reject) => {
-    postModel.find({ name: city, type: type }, "review", (err, resp) => {
+    postModel.find({ name: city, type: type }, "reviewsByUser", (err, resp) => {
       if (err) {
         reject(err);
       } else {
@@ -134,11 +235,30 @@ findReviews = (city, type) => {
   });
 };
 
+findBoss = (city, type) => {
+  return new Promise((resolve, reject) => {
+    postModel.find({ name: city, type: type }, "boss", (err, resp) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(resp);
+      }
+    });
+  });
+};
+
+// insertBoss();
+// updateBoss();
+// insertReviewsByUser();
+// delteReviewByUser();
+// test();
+
 module.exports = {
   db,
   postModel,
   selectAll,
   findOne,
   findWithRegex,
-  insertReview
+  insertReview,
+  findBoss
 };

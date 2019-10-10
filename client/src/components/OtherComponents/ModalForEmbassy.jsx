@@ -21,50 +21,144 @@ import PostReviewModal from "./PostReviewModal.jsx";
 import BossReviewModal from "./BossReviewModal.jsx";
 
 const PlaceHolder = ({ ...rest }) => {
-  let [rating, setRating] = useState(0);
+  let [rating, setRating] = useState(null);
   let [loading, setLoading] = useState(false);
+  let [safetyReview, setSafetyReview] = useState(null);
+  let [funReview, setFunReview] = useState(null);
+  let [workPlaceRating, setWorkPlaceRatingReview] = useState(null);
+  let [costReview, setCostReview] = useState(null);
+  let [bossReview, setBossReview] = useState(null);
 
   let displayRightRating = () => {
-    if (rating === 0) {
+    if (!rating) {
       return <p>No reviews yet</p>;
     } else {
       return (
-        <div
-          style={{ textAlign: "center", margin: "0 auto", marginTop: "2px" }}
-        >
+        <div style={{ marginTop: "5px" }}>
           <Rating icon="star" defaultRating={rating} maxRating={5} />
         </div>
       );
     }
   };
 
+  let chooseColor = inputNumber => {
+    if (inputNumber >= 30 && inputNumber < 70) return "yellow";
+    else if (inputNumber >= 70) return "green";
+    else return "red";
+  };
+
   var props = Object.assign({}, { ...rest });
   return (
     <Popup
+      offset="0, 50px"
+      position="left center"
       onOpen={() => {
         setLoading(true);
-        axios.get(`/review/${props.nameOfCity}/e`).then(resp => {
-          let reviewsArray = resp.data[0].review;
-          if (reviewsArray.length === 0) {
-            return;
-          } else {
-            let reviews = reviewsArray.reduce((accum, ele) => {
-              return accum + ele.currentRating;
-            }, 0);
-            reviews = (reviews / reviewsArray.length).toFixed(1);
-            setRating(reviews);
-          }
-        });
+        axios
+          .get(`/review/${props.nameOfCity}/e`)
+          .then(resp => {
+            console.log("this is resp", resp);
+            let reviewsArray = resp.data[0].reviewsByUser;
+            if (reviewsArray.length === 0) {
+              return;
+            } else {
+              let safetyReviewAverage =
+                reviewsArray.reduce((accum, ele) => {
+                  return accum + ele.safety;
+                }, 0) / reviewsArray.length;
+
+              safetyReviewAverage = safetyReviewAverage.toFixed(1);
+
+              safetyReviewAverage = (safetyReviewAverage * 100) / 5;
+
+              let costReviewAverage =
+                reviewsArray.reduce((accum, ele) => {
+                  return accum + ele.cost;
+                }, 0) / reviewsArray.length;
+
+              costReviewAverage = costReviewAverage.toFixed(1);
+
+              costReviewAverage = (costReviewAverage * 100) / 5;
+
+              let funReviewAverage =
+                reviewsArray.reduce((accum, ele) => {
+                  return accum + ele.fun;
+                }, 0) / reviewsArray.length;
+
+              funReviewAverage = funReviewAverage.toFixed(1);
+
+              funReviewAverage = (funReviewAverage * 100) / 5;
+
+              let workPlaceRatingAverage =
+                reviewsArray.reduce((accum, ele) => {
+                  return accum + ele.workPlaceRating;
+                }, 0) / reviewsArray.length;
+
+              workPlaceRatingAverage = workPlaceRatingAverage.toFixed(1);
+
+              workPlaceRatingAverage = (workPlaceRatingAverage * 100) / 5;
+
+              return [
+                funReviewAverage,
+                workPlaceRatingAverage,
+                costReviewAverage,
+                safetyReviewAverage
+              ];
+            }
+          })
+          .then(average => {
+            axios.get(`/boss/${props.nameOfCity}/e`).then(bossInfo => {
+              var bossRate = bossInfo.data[0].boss;
+              var dictionary = {
+                A: 100,
+                B: 80,
+                C: 60,
+                D: 40,
+                E: 20
+              };
+
+              let [
+                funReviewAverage,
+                workPlaceRatingAverage,
+                costReviewAverage,
+                safetyReviewAverage
+              ] = average;
+
+              var bossEvaluation = dictionary[bossRate[1]];
+
+              let averageOfAverages =
+                (bossEvaluation +
+                  safetyReviewAverage +
+                  costReviewAverage +
+                  funReviewAverage +
+                  workPlaceRatingAverage) /
+                4;
+
+              console.log("average one", averageOfAverages);
+
+              averageOfAverages = Math.round((averageOfAverages * 5) / 100);
+
+              setRating(averageOfAverages);
+              setBossReview(bossEvaluation);
+              setSafetyReview(safetyReviewAverage);
+              setCostReview(costReviewAverage);
+              setFunReview(funReviewAverage);
+              setWorkPlaceRatingReview(workPlaceRatingAverage);
+            });
+          });
       }}
       inverted
       trigger={
-        <div>
+        <div style={{ position: "relative" }}>
           <div
             style={{
-              width: "22px",
-              height: "27px",
+              width: "34px",
+              height: "34px",
               position: "absolute",
-              zIndex: "2"
+
+              zIndex: "2",
+              marginLeft: "-10px"
+              // background: "red"
             }}
             {...rest}
           />
@@ -72,131 +166,193 @@ const PlaceHolder = ({ ...rest }) => {
       }
     >
       <Popup.Header>
-        Embaixada do Brasil em {props.nameOfCity} : {rating}
+        <div>
+          <div style={{ display: "flex" }}>
+            Embaixada do Brasil em {props.nameOfCity}
+            <div
+              style={{
+                flex: "4",
+                marginTop: "20px",
+                textAlign: "center",
+                margin: "0 auto"
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "40px",
+                  height: "40px",
+                  fontSize: "11px",
+                  flex: "1",
+                  borderRadius: "50%",
+                  border: "white 2px solid"
+                }}
+              >
+                {rating}
+                <br /> stars
+              </div>
+            </div>
+          </div>
+          <div>{displayRightRating()}</div>
+        </div>
       </Popup.Header>
-      <Popup.Content>
-        <div style={{ display: "flex" }}>{displayRightRating()}</div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "10% 90%"
-          }}
-        >
-          <div style={{ display: "flex" }}>
-            <span> {"\u{1F4B5}"}</span>
-            <p></p>
-          </div>
-          <div style={{ position: "relative" }}>
-            <div
-              style={{
-                width: "100%",
-                position: "absolute",
-                bottom: "-16px"
-              }}
-            >
-              <Progress
-                size="small"
-                percent={20}
-                color="red"
-                label="Salary/Cost"
-                inverted
-              />
+      <Divider inverted />
+      {rating ? (
+        <Popup.Content>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "10% 90%"
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <span> {"\u{1F4B5}"}</span>
+              <p></p>
+            </div>
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  width: "100%",
+                  position: "absolute",
+                  bottom: "-16px"
+                }}
+              >
+                <Progress
+                  size="small"
+                  percent={costReview}
+                  color={chooseColor(costReview)}
+                  label="Salary/Cost"
+                  inverted
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div
-          style={{
-            marginTop: "22px",
-            display: "grid",
-            gridTemplateColumns: "10% 90%"
-          }}
-        >
-          <div style={{ display: "flex" }}>
-            <span> {"\u{1F46E}"}</span>
-            <p></p>
-          </div>
-          <div style={{ position: "relative" }}>
-            <div
-              style={{
-                width: "100%",
-                position: "absolute",
-                bottom: "-16px"
-              }}
-            >
-              <Progress
-                size="small"
-                percent={70}
-                color="green"
-                label="Safety"
-                inverted
-              />
+          <div
+            style={{
+              marginTop: "22px",
+              display: "grid",
+              gridTemplateColumns: "10% 90%"
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <span> {"\u{1F46E}"}</span>
+              <p></p>
+            </div>
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  width: "100%",
+                  position: "absolute",
+                  bottom: "-16px"
+                }}
+              >
+                <Progress
+                  size="small"
+                  percent={safetyReview}
+                  color={chooseColor(safetyReview)}
+                  label="Safety"
+                  inverted
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div
-          style={{
-            marginTop: "22px",
-            display: "grid",
-            gridTemplateColumns: "10% 90%"
-          }}
-        >
-          <div style={{ display: "flex" }}>
-            <span> {"\u{1F60E}"}</span>
-            <p></p>
-          </div>
-          <div style={{ position: "relative" }}>
-            <div
-              style={{
-                width: "100%",
-                position: "absolute",
-                bottom: "-16px"
-              }}
-            >
-              <Progress
-                size="small"
-                percent={60}
-                color="yellow"
-                label="Fun"
-                inverted
-              />
+          <div
+            style={{
+              marginTop: "22px",
+              display: "grid",
+              gridTemplateColumns: "10% 90%"
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <span> {"\u{1F60E}"}</span>
+              <p></p>
+            </div>
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  width: "100%",
+                  position: "absolute",
+                  bottom: "-16px"
+                }}
+              >
+                <Progress
+                  size="small"
+                  percent={funReview}
+                  color={chooseColor(funReview)}
+                  label="Fun"
+                  inverted
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div
-          style={{
-            marginTop: "22px",
-            display: "grid",
-            gridTemplateColumns: "10% 90%",
-            marginBottom: "22px"
-          }}
-        >
-          <div style={{ display: "flex" }}>
-            <span> {"\u{1F454}"}</span>
-            <p></p>
-          </div>
-          <div style={{ position: "relative" }}>
-            <div
-              style={{
-                width: "100%",
-                position: "absolute",
-                bottom: "-16px"
-              }}
-            >
-              <Progress
-                size="small"
-                percent={90}
-                color="green"
-                label="Boss"
-                inverted
-              />
+          <div
+            style={{
+              marginTop: "22px",
+              display: "grid",
+              gridTemplateColumns: "10% 90%"
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <span> {"\u{1F91D}"}</span>
+              <p></p>
+            </div>
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  width: "100%",
+                  position: "absolute",
+                  bottom: "-16px"
+                }}
+              >
+                <Progress
+                  size="small"
+                  percent={workPlaceRating}
+                  color={chooseColor(workPlaceRating)}
+                  label="Workplace Environment"
+                  inverted
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </Popup.Content>
+
+          <div
+            style={{
+              marginTop: "22px",
+              display: "grid",
+              gridTemplateColumns: "10% 90%",
+              marginBottom: "22px"
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <span> {"\u{1F454}"}</span>
+              <p></p>
+            </div>
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  width: "100%",
+                  position: "absolute",
+                  bottom: "-16px"
+                }}
+              >
+                <Progress
+                  size="small"
+                  percent={bossReview}
+                  color={chooseColor(bossReview)}
+                  label="Boss"
+                  inverted
+                />
+              </div>
+            </div>
+          </div>
+        </Popup.Content>
+      ) : null}
     </Popup>
   );
 };
@@ -244,13 +400,11 @@ export default class ModalComponent extends Component {
     var city = this.props.nameOfCity;
     var type = "e";
     axios.get(`/review/${city}/${type}`).then(result => {
-      console.log("this is result", result);
-      if (result.data.length === 0) {
+      if (!result.length) {
         return;
       } else {
-        console.log("this is the review", result.data[0].review);
         this.setState({
-          reviews: result.data[0].review
+          reviews: result.data[0].reviewsByUser
         });
       }
     });
