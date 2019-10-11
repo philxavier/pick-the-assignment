@@ -192,12 +192,10 @@ class ReviewModal extends React.Component {
       workPlaceRating: this.state.workPlaceRating,
       fun: this.state.fun,
       textAreaContent: this.state.textAreaContent,
-      type: "e",
+      type: this.props.infos.type,
       postName: this.props.infos.nameOfCity,
       safety: this.state.safety
     };
-
-    console.log("this is the review", fullReview);
 
     axios
       .post("/review", fullReview)
@@ -235,7 +233,6 @@ class ReviewModal extends React.Component {
   }
 
   handleRate(e, { rating, maxRating, value }) {
-    console.log("this is value", value);
     this.setState(
       {
         [value]: rating
@@ -271,7 +268,7 @@ class ReviewModal extends React.Component {
         closeIcon
       >
         <Modal.Header>
-          Review for Embassy of Brazil in {this.props.infos.nameOfCity}
+          Review for the post in {this.props.infos.nameOfCity}
         </Modal.Header>
         <Modal.Content image scrolling>
           <div style={{ textAlign: "center", marginRight: "2%" }}>

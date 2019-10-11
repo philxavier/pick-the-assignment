@@ -6,7 +6,8 @@ export default class EmbassyImg extends Component {
     super(props);
     this.state = {
       card: false,
-      placeHolder: false
+      placeHolder: false,
+      typeOfPostUrl: null
     };
 
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
@@ -35,6 +36,21 @@ export default class EmbassyImg extends Component {
     });
   }
 
+  componentDidMount() {
+    if (this.props.type === "e") {
+      var typeOfPost =
+        "https://s3-us-west-1.amazonaws.com/mvp-sprint/Embassy.png";
+    } else if (this.props.type === "m") {
+      var typeOfPost =
+        "https://s3-us-west-1.amazonaws.com/mvp-sprint/Mission.png";
+    } else {
+      var typeOfPost =
+        "https://s3-us-west-1.amazonaws.com/mvp-sprint/Consulate.png";
+    }
+
+    this.setState({ typeOfPostUrl: typeOfPost });
+  }
+
   render() {
     let {
       src,
@@ -43,6 +59,7 @@ export default class EmbassyImg extends Component {
       cost,
       classPost,
       photos,
+      type,
       reviews
     } = this.props;
 
@@ -66,12 +83,13 @@ export default class EmbassyImg extends Component {
                 classPost={classPost}
                 handleMouseLeave={this.handleMouseLeave}
                 reviews={reviews}
+                type={type}
               />
             </div>
           ) : null}
           <img
             id="consulateImg"
-            src="https://s3-us-west-1.amazonaws.com/mvp-sprint/Embassy.png"
+            src={this.state.typeOfPostUrl}
             alt=""
             height="27"
             width="22"

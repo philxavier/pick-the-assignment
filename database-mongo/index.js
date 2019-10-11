@@ -223,27 +223,36 @@ let insertReview = (
   });
 };
 
+// { name: { $regex: `^${input}`, $options: "i" } },
 findReviews = (city, type) => {
   return new Promise((resolve, reject) => {
-    postModel.find({ name: city, type: type }, "reviewsByUser", (err, resp) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(resp);
+    postModel.find(
+      { name: city, type: { $regex: type, $options: "i" } },
+      "reviewsByUser",
+      (err, resp) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(resp);
+        }
       }
-    });
+    );
   });
 };
 
 findBoss = (city, type) => {
   return new Promise((resolve, reject) => {
-    postModel.find({ name: city, type: type }, "boss", (err, resp) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(resp);
+    postModel.find(
+      { name: city, type: { $regex: type, $options: "i" } },
+      "boss",
+      (err, resp) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(resp);
+        }
       }
-    });
+    );
   });
 };
 

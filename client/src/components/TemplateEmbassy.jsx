@@ -15,7 +15,8 @@ export default class TemplateEmbassy extends Component {
       boss,
       cost,
       photos,
-      reviews
+      reviews,
+      type
     } = this.props;
     return (
       <div>
@@ -27,6 +28,7 @@ export default class TemplateEmbassy extends Component {
           boss={boss}
           cost={cost}
           src={src}
+          type={type}
         />
       </div>
     );

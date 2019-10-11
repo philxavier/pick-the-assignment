@@ -52,6 +52,7 @@ app.get("/findPost/:name", (req, res) => {
 app.get("/review/:name/:type", (req, res) => {
   let city = req.params.name;
   let type = req.params.type;
+
   findReviews(city, type)
     .then(result => {
       res.send(result);

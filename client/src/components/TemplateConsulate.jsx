@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ConsulateImg from "./ConsulateImg.jsx";
+import EmbassyImg from "./EmbassyImg.jsx";
 import { Popup } from "semantic-ui-react";
 
 export default class TemplateConsulate extends Component {
@@ -15,6 +15,7 @@ export default class TemplateConsulate extends Component {
       cost,
       src,
       photos,
+      type,
       ...rest
     } = this.props;
     return (
@@ -22,13 +23,14 @@ export default class TemplateConsulate extends Component {
         <Popup
           content="Add users to your feed"
           trigger={
-            <ConsulateImg
+            <EmbassyImg
               photos={photos}
               nameOfCity={nameOfCity}
               classPost={classPost}
               boss={boss}
               cost={cost}
               src={src}
+              type={type}
               {...rest}
             />
           }
