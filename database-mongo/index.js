@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const mongoose = require("mongoose");
-var config = require("../mongo.config.js").URI;
+// var config = require("../mongo.config.js").URI;
 const bossList = require("./bossList");
 const namesOfCities = require("./postsString").namesOfCities;
 //I THINK I HAVE MANUALLY SET CONNECTION STRING TO THE RIGHT URI, WHICH IS THE STRING AT MONGO.CONFIG.JS
