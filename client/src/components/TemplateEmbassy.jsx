@@ -18,6 +18,7 @@ export default class TemplateEmbassy extends Component {
       reviews,
       type
     } = this.props;
+
     return (
       <div>
         <EmbassyImg

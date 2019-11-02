@@ -401,7 +401,8 @@ export default class ModalComponent extends Component {
     this.state = {
       statusPostReviewModal: false,
       statusBossReviewModal: false,
-      reviews: null
+      reviews: null,
+      alt: "https://s3-us-west-1.amazonaws.com/mvp-sprint/Default.png"
     };
 
     this.openPostReviewModal = this.openPostReviewModal.bind(this);
@@ -463,6 +464,10 @@ export default class ModalComponent extends Component {
               <Image
                 wrapped
                 size="medium"
+                onError={e => {
+                  e.target.src =
+                    "https://mvp-sprint.s3-us-west-1.amazonaws.com/Default.png";
+                }}
                 src={this.props.src}
                 bordered={true}
               />

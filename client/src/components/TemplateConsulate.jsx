@@ -18,6 +18,7 @@ export default class TemplateConsulate extends Component {
       type,
       ...rest
     } = this.props;
+
     return (
       <div>
         <Popup

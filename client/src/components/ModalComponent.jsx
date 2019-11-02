@@ -18,7 +18,11 @@ const ModalExample = props => (
   >
     <Modal.Header>Select a Photo</Modal.Header>
     <Modal.Content image>
-      <Image wrapped size="medium" src={props.src} />
+      <Image
+        wrapped
+        size="medium"
+        src="https://s3-us-west-1.amazonaws.com/mvp-sprint/default.png"
+      />
       <Modal.Description>
         <Header>Consulate General of Brazil in {props.nameOfCity}</Header>
         <div

@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const mongoose = require("mongoose");
-// var config = require("../mongo.config.js").URI;
+var config = require("../mongo.config.js").URI;
 const bossList = require("./bossList");
 const namesOfCities = require("./postsString").namesOfCities;
 //I THINK I HAVE MANUALLY SET CONNECTION STRING TO THE RIGHT URI, WHICH IS THE STRING AT MONGO.CONFIG.JS
@@ -12,7 +12,7 @@ var connectionString = process.env.MONGO_URI;
 
 mongoose
   //connecting to mongo atlas and choosing database
-  .connect(connectionString, { dbName: "mvp", useNewUrlParser: true })
+  .connect(config, { dbName: "mvp", useNewUrlParser: true })
   .then(() => {
     console.log("Connection to database successfull");
   })
