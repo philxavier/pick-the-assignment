@@ -1,5 +1,14 @@
 import React, { Component, useState } from "react";
+import regeneratorRuntime from "regenerator-runtime";
+
+import {
+  getAndTransformStats,
+  calculateBossRateAndIncludeInRatingsOfRatings
+} from "../../../../HelperFuncs";
 import axios from "axios";
+import { connect } from "react-redux";
+import { setSizeOfCurrentPostReviewArray } from "../../../../store/actions/ModalForEmbassyAction.jsx";
+import { setCurrentPostRatingOfRatings } from "../../../../store/actions/PopUpAction.jsx";
 import {
   Image,
   Popup,
@@ -8,11 +17,6 @@ import {
   Modal,
   Divider,
   Button,
-  Form,
-  TextArea,
-  Input,
-  Icon,
-  Loader,
   Progress
 } from "semantic-ui-react";
 
@@ -230,114 +234,45 @@ const PlaceHolder = ({ ...rest }) => {
     <Popup
       offset="0, 50px"
       position="left center"
-      onOpen={() => {
+      onOpen={async () => {
         setLoading(1);
-        axios
-          .get(`/review/${props.nameOfCity}/${props.type[0]}`)
-          .then(resp => {
-            console.log("this is resp", resp);
-            let reviewsArray = resp.data[0].reviewsByUser;
-            if (reviewsArray.length === 0) {
-              setLoading(0);
-              return Promise.reject("empty review array");
-            } else {
-              let safetyReviewAverage =
-                reviewsArray.reduce((accum, ele) => {
-                  return accum + ele.safety;
-                }, 0) / reviewsArray.length;
+        let getReviews = async () => {
+          let resp = await axios.get(
+            `/review/${props.nameOfCity}/${props.type[0]}`
+          );
+          return resp;
+        };
+        const reviews = await getReviews();
+        let reviewsArray = reviews.data[0].reviewsByUser;
+        if (reviewsArray.length === 0) {
+          setLoading(0);
+          return Promise.reject("empty review array");
+        } else {
+          props.setSizeOfCurrentPostReviewArray(reviewsArray.length);
+          let average = getAndTransformStats(reviewsArray);
+          let getBossInfo = async () => {
+            let bossInfo = await axios.get(
+              `/boss/${props.nameOfCity}/${props.type[0]}`
+            );
+            return bossInfo;
+          };
 
-              safetyReviewAverage = safetyReviewAverage.toFixed(1);
-
-              safetyReviewAverage = (safetyReviewAverage * 100) / 5;
-
-              let costReviewAverage =
-                reviewsArray.reduce((accum, ele) => {
-                  return accum + ele.cost;
-                }, 0) / reviewsArray.length;
-
-              costReviewAverage = costReviewAverage.toFixed(1);
-
-              costReviewAverage = (costReviewAverage * 100) / 5;
-
-              let funReviewAverage =
-                reviewsArray.reduce((accum, ele) => {
-                  return accum + ele.fun;
-                }, 0) / reviewsArray.length;
-
-              funReviewAverage = funReviewAverage.toFixed(1);
-
-              funReviewAverage = (funReviewAverage * 100) / 5;
-
-              let workPlaceRatingAverage =
-                reviewsArray.reduce((accum, ele) => {
-                  return accum + ele.workPlaceRating;
-                }, 0) / reviewsArray.length;
-
-              workPlaceRatingAverage = workPlaceRatingAverage.toFixed(1);
-
-              workPlaceRatingAverage = (workPlaceRatingAverage * 100) / 5;
-
-              var averagesContainer = [
-                funReviewAverage,
-                workPlaceRatingAverage,
-                costReviewAverage,
-                safetyReviewAverage
-              ];
-
-              return averagesContainer;
-            }
-          })
-          .then(average => {
-            axios
-              .get(`/boss/${props.nameOfCity}/${props.type[0]}`)
-              .then(bossInfo => {
-                var bossRate = bossInfo.data[0].boss;
-                var dictionary = {
-                  A: 100,
-                  B: 80,
-                  C: 60,
-                  D: 40,
-                  E: 20
-                };
-
-                let [
-                  funReviewAverage,
-                  workPlaceRatingAverage,
-                  costReviewAverage,
-                  safetyReviewAverage
-                ] = average;
-
-                var bossEvaluation = dictionary[bossRate[1]];
-
-                let averageOfAverages =
-                  (bossEvaluation +
-                    safetyReviewAverage +
-                    costReviewAverage +
-                    funReviewAverage +
-                    workPlaceRatingAverage) /
-                  5;
-
-                averageOfAverages = (averageOfAverages * 5) / 100;
-
-                let ratingForRatingComponent = Math.round(averageOfAverages);
-
-                console.log("new average", ratingForRatingComponent);
-
-                console.log(ratingForRatingComponent);
-
-                setRatingForRatingComponent(ratingForRatingComponent);
-                setRating(averageOfAverages);
-                setBossReview(bossEvaluation);
-                setSafetyReview(safetyReviewAverage);
-                setCostReview(costReviewAverage);
-                setFunReview(funReviewAverage);
-                setWorkPlaceRatingReview(workPlaceRatingAverage);
-              });
-            setLoading(2);
-          })
-          .catch(err => {
-            console.log("there was an error", err);
-          });
+          let bossInfo = await getBossInfo();
+          console.log("this is bossInfo", bossInfo);
+          let averageOfAverages = calculateBossRateAndIncludeInRatingsOfRatings(
+            bossInfo,
+            average,
+            setRatingForRatingComponent,
+            setRating,
+            setSafetyReview,
+            setFunReview,
+            setWorkPlaceRatingReview,
+            setBossReview,
+            setCostReview
+          );
+          setLoading(2);
+          props.setCurrentPostRatingOfRatings(averageOfAverages);
+        }
       }}
       inverted
       trigger={
@@ -395,7 +330,7 @@ const PlaceHolder = ({ ...rest }) => {
   );
 };
 
-export default class ModalComponent extends Component {
+class ModalComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -585,3 +520,25 @@ export default class ModalComponent extends Component {
     );
   }
 }
+
+const MapDispatchToProps = dispatch => {
+  return {
+    setCurrentPostRatingOfRatings: rating => {
+      dispatch(setCurrentPostRatingOfRatings(rating));
+    },
+    setSizeOfCurrentPostReviewArray: reviewsArrayLength => {
+      dispatch(setSizeOfCurrentPostReviewArray(reviewsArrayLength));
+    }
+  };
+};
+
+const MapStateToProps = state => {
+  return {
+    currentPostRating: state.currentPostRating
+  };
+};
+
+export default connect(
+  MapStateToProps,
+  MapDispatchToProps
+)(ModalComponent);

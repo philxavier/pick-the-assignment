@@ -6,7 +6,8 @@ import TemplateMission from "./TemplateMission.jsx";
 import Axios from "axios";
 import { connect } from "react-redux";
 import { setFullListOfPosts } from "../../../store/actions/SimpleMapAction.jsx";
-import { Popup, Statistic, Button, Icon } from "semantic-ui-react";
+import { Popup, Statistic, Button, Icon, Input } from "semantic-ui-react";
+import SearchBar from "./OtherComponents/SearchBar.jsx";
 
 class SimpleMap extends Component {
   constructor(props) {
@@ -40,53 +41,59 @@ class SimpleMap extends Component {
       >
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center"
+            margin: "0",
+            position: "fixed",
+            top: "2.02em",
+            right: "2em",
+            color: "#DB2828"
           }}
         >
+          <Statistic size="small" color="red">
+            <Statistic.Value>
+              {this.props.filteredListOfPosts.length}
+            </Statistic.Value>
+            <p style={{ margin: "0 auto" }}>Posts</p>
+          </Statistic>
+        </div>
+
+        <div className="topbar">
           <img
             className="logo"
             src="https://mvp-sprint.s3-us-west-1.amazonaws.com/logo+pick+the+assignment.png"
             alt=""
           />
+
+          <SearchBar />
+
           <div
             style={{
               // background: "blue",
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
-              width: "16%",
+              // width: "16%",
               justifyContent: "space-between",
-              color: "#DB2828"
+              color: "#DB2828",
+              marginLeft: "auto"
             }}
           >
-            <Statistic color="red">
-              <Statistic.Value>
-                {this.props.filteredListOfPosts.length}
-              </Statistic.Value>
-              <p style={{ margin: "0 auto" }}>Posts</p>
-            </Statistic>
-            <div style={{ display: "flex" }}>
-              <div>
-                <Popup
-                  content="Map Overview"
-                  trigger={
-                    <Button color="green" icon>
-                      <Icon color="black" name="world" />
-                    </Button>
-                  }
-                />
-              </div>
-              <div style={{}}>
-                <Popup
-                  content="Boss Rankings"
-                  trigger={
-                    <Button color="grey" icon>
-                      <Icon color="black" name="male" />
-                    </Button>
-                  }
-                />
-              </div>
+            <div className="boxes-container">
+              <Popup
+                content="Map Overview"
+                trigger={
+                  <Button color="green" icon>
+                    <Icon color="black" name="world" />
+                  </Button>
+                }
+              />
+              <Popup
+                content="Boss Rankings"
+                trigger={
+                  <Button color="grey" icon>
+                    <Icon color="black" name="male" />
+                  </Button>
+                }
+              />
             </div>
           </div>
         </div>
@@ -177,7 +184,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SimpleMap);
+export default connect(mapStateToProps, mapDispatchToProps)(SimpleMap);

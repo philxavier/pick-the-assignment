@@ -10,9 +10,17 @@ import {
   Form,
   Rating,
   Statistic,
-  Message
+  Message,
+  Loader
 } from "semantic-ui-react";
 import Calendar from "./Calendar.jsx";
+import { connect } from "react-redux";
+import { resetStats } from "../../../../store/actions/PostReviewAction.jsx";
+import { setCurrentPostRatingOfRatings } from "../../../../store/actions/PopUpAction.jsx";
+import {
+  getAndTransformStats2,
+  transformBossRateIntoNumber
+} from "../../../../HelperFuncs";
 
 class ReviewModal extends React.Component {
   constructor(props) {
@@ -31,7 +39,8 @@ class ReviewModal extends React.Component {
       dateNotCompleteOnSubmit: false,
       ratingNotCompleteOnSubmit: false,
       showSuccessMessage: false,
-      retrievedRate: this.props.reviews
+      retrievedRate: this.props.reviews,
+      loading: false
     };
 
     this.retrieveDates = this.retrieveDates.bind(this);
@@ -89,6 +98,13 @@ class ReviewModal extends React.Component {
         />
       </div>
     );
+  }
+
+  resetStats() {
+    this.setState({
+      overallRating: null
+    });
+    this.props.resetStats();
   }
 
   resetOptions() {
@@ -178,6 +194,10 @@ class ReviewModal extends React.Component {
   }
 
   handleSubmit() {
+    this.setState({
+      loading: true
+    });
+
     if (this.validateDataForSubmition() === true) {
       this.setState({
         showSuccessMessage: true
@@ -201,27 +221,36 @@ class ReviewModal extends React.Component {
       .post("/review", fullReview)
       .then(() => {
         let name = this.props.infos.nameOfCity;
-        let type = "e";
-        axios.get(`/review/${name}/${type}`).then(result => {
-          let reviews = result.data[0].review;
-          let newAverage = (
-            reviews.reduce((accum, ele) => {
-              return accum + ele.currentRating;
-            }, 0) / reviews.length
-          ).toFixed(1);
-          this.setState({
-            retrievedRate: newAverage
+        let type = fullReview.type;
+        axios.get(`/review/${name}/${type}`).then(async result => {
+          let reviews = result.data[0].reviewsByUser;
+          let averages = getAndTransformStats2(reviews);
+          let getBossInfo = async () => {
+            let bossInfo = await axios.get(
+              `/boss/${fullReview.postName}/${fullReview.type}`
+            );
+            return bossInfo;
+          };
+          let bossInfo = await getBossInfo();
+          let bossRate = transformBossRateIntoNumber(bossInfo);
+          averages.push(bossRate);
+          averages = averages.map(ele => {
+            return parseFloat(ele);
           });
+          let newAverage =
+            averages.reduce((accum, ele) => {
+              return accum + ele;
+            }) / averages.length;
+
+          this.props.setCurrentPostRatingOfRatings(newAverage.toFixed(2));
         });
       })
       .catch(err => {
         console.log("there was an error posting", err);
       });
-    //get rating for that post
-    //update statistics
-
     this.setState({
-      submited: true
+      submited: true,
+      loading: false
     });
   }
 
@@ -257,13 +286,41 @@ class ReviewModal extends React.Component {
     );
   }
 
+  decideColor = rating => {
+    if (rating <= 2) {
+      return "red";
+    } else if (rating > 2 && rating < 3.5) {
+      return "yellow";
+    } else {
+      return "green";
+    }
+  };
+
+  decideColor2 = rating => {
+    if (rating <= 2) {
+      return "#DB2828";
+    } else if (rating > 2 && rating < 3.5) {
+      return "#fbbd08";
+    } else {
+      return "#21BA45";
+    }
+  };
+
+  createStatistic = () => {
+    return (
+      <Statistic>
+        <Statistic.Value>{this.state.overallRating}</Statistic.Value>
+        <Statistic.Label> Stars</Statistic.Label>
+      </Statistic>
+    );
+  };
   render() {
     return (
       <Modal
         open={this.props.open}
         onClose={() => {
           this.props.close();
-          this.resetOptions();
+          this.resetStats();
         }}
         closeIcon
       >
@@ -278,17 +335,30 @@ class ReviewModal extends React.Component {
               wrapped
             />
             <h2>Current evaluation is: </h2>
-            {!this.props.reviews ? (
+            {this.state.loading ? (
+              <Loader inverted size="massive">
+                Loading
+              </Loader>
+            ) : !this.props.reviews ? (
               <div>
-                <Statistic color="yellow">
+                <Statistic
+                  color={this.decideColor(
+                    this.props.currentPostRatingOfRatings
+                  )}
+                >
                   <Statistic.Value>
-                    {typeof this.state.retrievedRate === "string"
-                      ? this.state.retrievedRate
-                      : this.calculatedAverage()}
+                    {this.props.currentPostRatingOfRatings}
                   </Statistic.Value>
-                  <Statistic.Label>stars</Statistic.Label>
+                  <div
+                    style={{
+                      color: this.decideColor2(
+                        this.props.currentPostRatingOfRatings
+                      )
+                    }}
+                  >
+                    <Statistic.Label>stars</Statistic.Label>
+                  </div>
                 </Statistic>
-
                 <div>
                   <Header.Subheader>
                     {this.state.reviews ? this.state.reviews.cost.length : null}
@@ -389,12 +459,7 @@ class ReviewModal extends React.Component {
                       No reviews yet
                     </Header>
                   ) : (
-                    <Statistic>
-                      <Statistic.Value>
-                        {this.state.overallRating}
-                      </Statistic.Value>
-                      <Statistic.Label> Stars</Statistic.Label>
-                    </Statistic>
+                    this.createStatistic()
                   )}
                 </div>
               </Header>
@@ -423,4 +488,25 @@ class ReviewModal extends React.Component {
   }
 }
 
-export default ReviewModal;
+const MapDispatchToProps = dispatch => {
+  return {
+    resetStats: () => {
+      dispatch(resetStats());
+    },
+    setCurrentPostRatingOfRatings: rating => {
+      dispatch(setCurrentPostRatingOfRatings(rating));
+    }
+  };
+};
+
+const MapStateToProps = state => {
+  return {
+    currentPostRatingOfRatings: state.currentPostRatingOfRatings,
+    currentPostSizeOfReviewArray: state.currentPostSizeOfReviewArray
+  };
+};
+
+export default connect(
+  MapStateToProps,
+  MapDispatchToProps
+)(ReviewModal);

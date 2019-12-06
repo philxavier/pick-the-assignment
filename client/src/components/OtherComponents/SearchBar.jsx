@@ -78,42 +78,40 @@ class SearchBar extends Component {
   render() {
     let { barValue } = this.props;
     return (
-      <div>
-        <div id="inputBar">
-          <Input
-            value={barValue}
-            size="large"
-            icon={
-              <Icon
-                onClick={() => {
-                  this.handleSearch();
-                }}
-                name="search"
-                inverted
-                circular
-                link
-              />
-            }
-            placeholder="Search..."
-            focus={true}
-            onChange={e => {
-              this.props.changeValue(e.target.value);
-              this.props.fetchPosts(e.target.value);
-            }}
-          />
-          {this.props.fetchedPosts.length ? (
-            <OutsideClickHandler
-              onOutsideClick={() => {
-                //dispatch action that sets fetchedPosts to []
-                //If user clicks outside, we close the suggestion list THROUGH
-                //OUTSIDECLICKHANDLER
-                this.props.fetchPosts("");
+      <div id="inputBar">
+        <Input
+          value={barValue}
+          size="large"
+          icon={
+            <Icon
+              onClick={() => {
+                this.handleSearch();
               }}
-            >
-              {this.renderSuggestions()}
-            </OutsideClickHandler>
-          ) : null}
-        </div>
+              name="search"
+              inverted
+              circular
+              link
+            />
+          }
+          placeholder="Search..."
+          focus={true}
+          onChange={e => {
+            this.props.changeValue(e.target.value);
+            this.props.fetchPosts(e.target.value);
+          }}
+        />
+        {this.props.fetchedPosts.length ? (
+          <OutsideClickHandler
+            onOutsideClick={() => {
+              //dispatch action that sets fetchedPosts to []
+              //If user clicks outside, we close the suggestion list THROUGH
+              //OUTSIDECLICKHANDLER
+              this.props.fetchPosts("");
+            }}
+          >
+            {this.renderSuggestions()}
+          </OutsideClickHandler>
+        ) : null}
       </div>
     );
   }
@@ -149,7 +147,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

@@ -117,9 +117,10 @@ input[type="checkbox"] {
   z-index: 10;
   position: absolute;
   /* width: 100%; */
-  margin-left: 43%;
+  /* margin-left: 43%; */
   text-align: center;
   top: 6%;
+
   /* top: 28px; */
 }
 
@@ -406,11 +407,44 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 .logo {
-  height: 75px;
+  height: 100%;
   width: 155px;
-  display: absolute;
-  /* position: absolute; */
+  margin-right: auto;
+  /* margin-bottom: -2em; */
+
+  /* display: absolute;
+  position: absolute;
   z-index: 2;
   left: 8%;
-  top: 2%;
+  top: 2%; */
+}
+.topbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.boxes-container {
+  display: flex;
+}
+
+@media only screen and (max-width: 947px) {
+  #inputBar {
+    top: 20%;
+  }
+
+  .logo {
+    margin-left: 3em;
+    width: 115px;
+    height: 100%;
+  }
+
+  .topbar {
+    margin-top: 3em;
+  }
+
+  .boxes-container {
+    margin-right: 4em;
+  }
 }

@@ -20,8 +20,9 @@ let initState = {
     currentRates: []
   },
   fullListOfPosts: [],
-  filteredListOfPosts: []
-  // checkboxOptionStatus:false
+  filteredListOfPosts: [],
+  currentPostRatingOfRatings: null,
+  currentPostSizeOfReviewArray: null
 };
 
 const SearchBarReducer = (state = initState, action) => {
@@ -178,6 +179,24 @@ const SearchBarReducer = (state = initState, action) => {
           classOfPost: state.filters.classOfPost,
           currentRates: []
         }
+      };
+
+    case "SET_RATING_OF_RATINGS":
+      return {
+        ...state,
+        currentPostRatingOfRatings: action.payload
+      };
+
+    case "RESET_STATS":
+      return {
+        ...state,
+        currentPostRatingOfRatings: null
+      };
+
+    case "SET_SIZE_OF_CURRENT_POST_REVIEW_ARRAY":
+      return {
+        ...state,
+        currentPostSizeOfReviewArray: action.payload
       };
 
     default:

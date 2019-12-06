@@ -117,7 +117,7 @@ let findWithRegex = input => {
   });
 };
 
-let delteReviewByUser = () => {
+let deleteReviewByUser = () => {
   postModel.updateMany({}, { $unset: { reviewsByUser: "" } }, (err, res) => {
     if (err) {
       console.log("there was an error performing this one", err);
@@ -212,7 +212,6 @@ let insertReview = (
           console.log("there wasa an error", err);
           reject(err);
         } else {
-          console.log("things went well");
           resolve(resp);
         }
       }
@@ -266,5 +265,6 @@ module.exports = {
   findOne,
   findWithRegex,
   insertReview,
-  findBoss
+  findBoss,
+  findReviews
 };

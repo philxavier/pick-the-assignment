@@ -22,8 +22,7 @@ class App extends Component {
     return (
       <div id="container">
         <SideBar />
-        <SearchBar handleSearchFromSearchBar={this.handleSearchFromSearchBar} />
-        <SimpleMap />
+        <SimpleMap handleSearchFromSearchBar={this.handleSearchFromSearchBar} />
       </div>
     );
   }
@@ -46,7 +45,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
