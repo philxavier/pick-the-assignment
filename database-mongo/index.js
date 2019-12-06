@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const mongoose = require("mongoose");
-var config = require("../mongo.config.js").URI;
+// var config = require("../mongo.config.js").URI;
 //THE CONFIG ABOVE IS TO BE USED DURING DEVELOPMENT
 const bossList = require("./bossList");
 const namesOfCities = require("./postsString").namesOfCities;
