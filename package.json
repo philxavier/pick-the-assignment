@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "react-dev": "webpack -d --watch",
-    "start": " server/index.js",
+    "start": "node server/index.js",
     "test": "jest"
   },
   "author": "Felipe Xavier",
