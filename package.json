@@ -19,7 +19,7 @@
     "@trendmicro/react-sidenav": "^0.4.5",
     "@types/lodash": "^4.14.123",
     "all-the-cities": "^2.0.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "cheerio": "^1.0.0-rc.3",
     "cities.json": "^1.1.5",
