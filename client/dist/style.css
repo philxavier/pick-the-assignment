@@ -9,7 +9,7 @@ html {
 }
 
 #container {
-  background: #38304c;
+  width: 100%;
 }
 
 input[type="checkbox"] {
@@ -39,7 +39,6 @@ input[type="checkbox"] {
   height: 100%;
   width: 20%;
   float: right;
-  background: #38304c;
   text-align: center;
   position: fixed;
   top: 0;
@@ -446,5 +445,29 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
   .boxes-container {
     margin-right: 4em;
+  }
+}
+
+.modal-wrapper {
+  margin-left: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-right: 1%;
+}
+
+.modal-outer-wrapper {
+  border-left: solid, 0.2px;
+  height: 100%;
+  width: 20%;
+  overflow-wrap: break-word;
+  overflow-y: visible;
+  text-align: justify;
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 766px) {
+  .modal-outer-wrapper {
+    width: auto;
   }
 }

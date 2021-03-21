@@ -8,42 +8,45 @@ let findBoss = require("../database-mongo/index.js").findBoss;
 let compression = require("compression");
 let PORT = process.env.PORT || 3001;
 const bodyParser = require("body-parser");
+const router = require("./routes");
 
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 
+app.use("/", router);
 app.use(bodyParser.json());
-
 app.use(compression());
 app.use(express.static(__dirname + "/../client/dist"));
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("LISTENING on port 3001!");
 });
 
 app.get("/posts", (req, res) => {
   selectAll()
-    .then(result => {
+    .then((result) => {
       // console.log("these are the results", result);
       res.send(result);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("there was an error in the server", err);
       res.status.send(404);
     });
 });
 
+// app.get("/findPost/:name", resolvers.findName);
+
 app.get("/findPost/:name", (req, res) => {
   let post = req.params.name;
   findWithRegex(post)
-    .then(result => {
+    .then((result) => {
       // console.log("these are the results", result);
       res.send(result);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("there was error in the server", err);
       res.status.send(404);
     });
@@ -54,10 +57,10 @@ app.get("/review/:name/:type", (req, res) => {
   let type = req.params.type;
 
   findReviews(city, type)
-    .then(result => {
+    .then((result) => {
       res.send(result);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("there was an error in the server", err);
       res.status.send(404);
     });
@@ -67,10 +70,10 @@ app.get("/boss/:name/:type", (req, res) => {
   let city = req.params.name;
   let type = req.params.type;
   findBoss(city, type)
-    .then(result => {
+    .then((result) => {
       res.send(result);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("there was an error in the server", err);
       res.status.send(404);
     });
@@ -85,7 +88,7 @@ app.post("/review", (req, res) => {
     fun,
     safety,
     type,
-    postName
+    postName,
   } = req.body;
 
   insertReview(
@@ -98,10 +101,10 @@ app.post("/review", (req, res) => {
     type,
     postName
   )
-    .then(result => {
+    .then((result) => {
       res.end();
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("there was an error", err);
     });
 });

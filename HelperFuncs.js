@@ -79,7 +79,6 @@ let buildNewRates = (newRatesArr, inputRate) => {
 };
 
 let getAndTransformStats = reviewsArray => {
-  debugger;
   let safetyReviewAverage =
     reviewsArray.reduce((accum, ele) => {
       return accum + ele.safety;
@@ -127,7 +126,6 @@ let getAndTransformStats = reviewsArray => {
 };
 
 let getAndTransformStats2 = reviewsArray => {
-  debugger;
   let safetyReviewAverage =
     reviewsArray.reduce((accum, ele) => {
       return accum + ele.safety;
@@ -177,7 +175,6 @@ let calculateBossRateAndIncludeInRatingsOfRatings = (
   setBossReview,
   setCostReview
 ) => {
-  debugger;
   var bossRate = bossInfo.data[0].boss;
   var dictionary = {
     A: 100,

@@ -414,6 +414,7 @@ class ModalComponent extends Component {
           </div>
           <Modal.Description>
             <div
+              className="modal-outer-wrapper"
               style={{
                 borderLeft: "solid 0.2px",
                 height: "100%",
@@ -424,7 +425,7 @@ class ModalComponent extends Component {
                 marginLeft: "10px"
               }}
             >
-              <div style={{ marginLeft: "12px" }}>
+              <div className="modal-wrapper">
                 <Header>General Description</Header>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
@@ -443,23 +444,26 @@ class ModalComponent extends Component {
                   Ullamcorper a lacus vestibulum sed arcu non odio euismod. Quis
                   imperdiet massa tincidunt nunc.
                 </p>
-                <h4>Boss Information</h4>
-                <ul style={{ listStyleType: "none" }}>
-                  <li>
-                    Boss Name: <b>{this.props.boss[0]}</b>
-                  </li>
-                  <li>
-                    What is his / her current evaluation:{" "}
-                    <b>{this.props.boss[1]}</b>
-                  </li>
-                </ul>
-                <Button
-                  onClick={this.openBossReviewModal}
-                  color="green"
-                  size="mini"
-                >
-                  Leave a review for this boss
-                </Button>
+                <div>
+                  <h4>Boss Information</h4>
+                  <ul style={{ listStyleType: "none" }}>
+                    <li>
+                      Boss Name: <b>{this.props.boss[0]}</b>
+                    </li>
+                    <li>
+                      What is his / her current evaluation:{" "}
+                      <b>{this.props.boss[1]}</b>
+                    </li>
+                  </ul>
+                  <Button
+                    onClick={this.openBossReviewModal}
+                    color="green"
+                    size="mini"
+                  >
+                    Leave a review for this boss
+                  </Button>
+                </div>
+
                 <BossReviewModal
                   infos={{ ...this.props }}
                   open={this.state.statusBossReviewModal}
@@ -538,7 +542,4 @@ const MapStateToProps = state => {
   };
 };
 
-export default connect(
-  MapStateToProps,
-  MapDispatchToProps
-)(ModalComponent);
+export default connect(MapStateToProps, MapDispatchToProps)(ModalComponent);

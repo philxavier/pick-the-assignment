@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const mongoose = require("mongoose");
-// var config = require("../mongo.config.js").URI;
+var config = require("../mongo.config.js").URI;
 //THE CONFIG ABOVE IS TO BE USED DURING DEVELOPMENT
 const bossList = require("./bossList");
 const namesOfCities = require("./postsString").namesOfCities;
@@ -9,7 +9,7 @@ const namesOfCities = require("./postsString").namesOfCities;
 
 //WHAT TO USE DURING DEPLOYMENT: '.connect(process.env.MONGO_URI, { dbName: 'mvp' })'
 
-var connectionString = process.env.MONGO_URI;
+var connectionString = process.env.MONGO_URI || config;
 
 mongoose
   //connecting to mongo atlas and choosing database
