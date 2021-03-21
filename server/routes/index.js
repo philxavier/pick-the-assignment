@@ -8,5 +8,6 @@ router.get("/animals", (req, res) => {
 });
 
 router.get("/findPost/:name", resolvers.findName);
+router.get("/posts", resolvers.getAllPosts);
 
 module.exports = router;

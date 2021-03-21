@@ -37,8 +37,6 @@ app.get("/posts", (req, res) => {
     });
 });
 
-// app.get("/findPost/:name", resolvers.findName);
-
 app.get("/findPost/:name", (req, res) => {
   let post = req.params.name;
   findWithRegex(post)
