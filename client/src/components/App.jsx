@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import SimpleMap from "./SimpleMap.jsx";
-import SearchBar from "./OtherComponents/SearchBar.jsx";
+
+import NewsComponent from "../components/OtherComponents/NewsComponent.jsx";
 import SideBar from "../components/OtherComponents/SideBar.jsx";
+import SimpleMap from "./SimpleMap.jsx";
 import { connect } from "react-redux";
 import { resetPostFromSearchbar } from "../../../store/actions/AppAction.jsx";
 
@@ -13,7 +14,7 @@ class App extends Component {
   handleSearchFromSearchBar(newCenter, zoom) {
     this.setState({
       center: newCenter,
-      zoom: zoom
+      zoom: zoom,
     });
   }
 
@@ -23,25 +24,26 @@ class App extends Component {
       <div id="container">
         <SideBar />
         <SimpleMap handleSearchFromSearchBar={this.handleSearchFromSearchBar} />
+        <NewsComponent />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     center: state.center,
     zoom: state.zoom,
     postFromSearchbar: state.postFromSearchbar,
-    filters: state.filters
+    filters: state.filters,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     resetPostFromSearchBar: () => {
       dispatch(resetPostFromSearchbar());
-    }
+    },
   };
 };
 

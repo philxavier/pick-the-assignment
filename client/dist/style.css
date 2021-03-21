@@ -10,6 +10,8 @@ html {
 
 #container {
   width: 100%;
+  position: relative;
+  height: 100vh;
 }
 
 input[type="checkbox"] {
@@ -470,4 +472,12 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .modal-outer-wrapper {
     width: auto;
   }
+}
+
+.newsComponent {
+  color: teal;
+  position: absolute;
+  right: 20px;
+  bottom: 30px;
+  cursor: pointer;
 }
