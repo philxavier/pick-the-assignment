@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import ModalForEmbassy from "./OtherComponents/ModalForEmbassy.jsx";
+import React, { Component } from 'react';
+import ModalForEmbassy from './OtherComponents/ModalForEmbassy.jsx';
 
 export default class EmbassyImg extends Component {
   constructor(props) {
@@ -37,43 +37,34 @@ export default class EmbassyImg extends Component {
   }
 
   componentDidMount() {
-    if (this.props.type === "e") {
+    if (this.props.type === 'e') {
       var typeOfPost =
-        "https://s3-us-west-1.amazonaws.com/mvp-sprint/Embassy.png";
-    } else if (this.props.type === "m") {
+        'https://s3-us-west-1.amazonaws.com/mvp-sprint/Embassy.png';
+    } else if (this.props.type === 'm') {
       var typeOfPost =
-        "https://s3-us-west-1.amazonaws.com/mvp-sprint/Mission.png";
+        'https://s3-us-west-1.amazonaws.com/mvp-sprint/Mission.png';
     } else {
       var typeOfPost =
-        "https://s3-us-west-1.amazonaws.com/mvp-sprint/Consulate.png";
+        'https://s3-us-west-1.amazonaws.com/mvp-sprint/Consulate.png';
     }
 
     this.setState({ typeOfPostUrl: typeOfPost });
   }
 
   render() {
-    let {
-      src,
-      nameOfCity,
-      boss,
-      cost,
-      classPost,
-      photos,
-      type,
-      reviews
-    } = this.props;
+    let { src, nameOfCity, boss, cost, classPost, photos, type, reviews } =
+      this.props;
 
     return (
       <div>
         <div
-          id="imgContainer"
-          className="consulateStyle grow"
+          id='imgContainer'
+          className='consulateStyle grow'
           onMouseEnter={this.handleMouseEnter}
         >
           {this.state.placeHolder ? (
             <div>
               <ModalForEmbassy
-                // mouseEnterForModal={this.mouseEnterForModal}
                 onClick={this.handleClick}
                 photos={photos}
                 src={src}
@@ -88,11 +79,11 @@ export default class EmbassyImg extends Component {
             </div>
           ) : null}
           <img
-            id="consulateImg"
+            id='consulateImg'
             src={this.state.typeOfPostUrl}
-            alt=""
-            height="27"
-            width="22"
+            alt=''
+            height='27'
+            width='22'
           />
         </div>
       </div>
