@@ -58,7 +58,7 @@
     "semantic-ui-react": "^0.86.0",
     "styled-components": "^4.2.0",
     "styled-icons": "^7.10.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
