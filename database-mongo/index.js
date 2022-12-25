@@ -1,32 +1,32 @@
 /* eslint-disable linebreak-style */
 // eslint-disable-next-line import/no-extraneous-dependencies
-const mongoose = require("mongoose");
-// var config = require("../mongo.config.js").URI;
+require('dotenv').config();
+
+const mongoose = require('mongoose');
+var config = require('../mongo.config.js').URI;
 //THE CONFIG ABOVE IS TO BE USED DURING DEVELOPMENT
-const bossList = require("./bossList");
-const namesOfCities = require("./postsString").namesOfCities;
+const bossList = require('./bossList');
+const namesOfCities = require('./postsString').namesOfCities;
 //I THINK I HAVE MANUALLY SET CONNECTION STRING TO THE RIGHT URI, WHICH IS THE STRING AT MONGO.CONFIG.JS
 
-//WHAT TO USE DURING DEPLOYMENT: '.connect(process.env.MONGO_URI, { dbName: 'mvp' })'
-
-var connectionString = process.env.MONGO_URI;
+var connectionString = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.vmxgf.mongodb.net/?retryWrites=true&w=majority`;
 
 mongoose
   //connecting to mongo atlas and choosing database
-  .connect(connectionString, { dbName: "mvp", useNewUrlParser: true })
+  .connect(connectionString, { dbName: 'mvp', useNewUrlParser: true })
   .then(() => {
-    console.log("Connection to database successfull");
+    console.log('Connection to database successfull');
   })
-  .catch(err => console.error(err));
+  .catch((err) => console.error(err));
 
 const db = mongoose.connection;
 
-db.on("error", () => {
-  console.log("mongoose connection error");
+db.on('error', () => {
+  console.log('mongoose connection error');
 });
 
-db.once("open", () => {
-  console.log("mongoose connected successfully");
+db.once('open', () => {
+  console.log('mongoose connected successfully');
 });
 
 const postSchema = mongoose.Schema(
@@ -52,7 +52,7 @@ const postSchema = mongoose.Schema(
 
 //TO CREATE A MODEL, REMEMBER, YOU PASS IN THE NAME OF THE MODEL (YOU PICK ANY NAME) AND THE SCHEMA
 
-const postModel = mongoose.model("Post", postSchema);
+const postModel = mongoose.model('Post', postSchema);
 
 let selectAll = () => {
   return new Promise((resolve, reject) => {
@@ -89,7 +89,7 @@ let insertBoss = async () => {
   }
 };
 
-let findOne = inputPost => {
+let findOne = (inputPost) => {
   return new Promise((resolve, reject) => {
     postModel.find({ name: inputPost }, (err, res) => {
       if (err) {
@@ -101,13 +101,13 @@ let findOne = inputPost => {
   });
 };
 
-let findWithRegex = input => {
+let findWithRegex = (input) => {
   return new Promise((resolve, reject) => {
     postModel.find(
-      { name: { $regex: `^${input}`, $options: "i" } },
+      { name: { $regex: `^${input}`, $options: 'i' } },
       (err, res) => {
         if (err) {
-          console.log("there was an error finding regex", err);
+          console.log('there was an error finding regex', err);
           reject(err);
         } else {
           // console.log("these are the results", res);
@@ -119,11 +119,11 @@ let findWithRegex = input => {
 };
 
 let deleteReviewByUser = () => {
-  postModel.updateMany({}, { $unset: { reviewsByUser: "" } }, (err, res) => {
+  postModel.updateMany({}, { $unset: { reviewsByUser: '' } }, (err, res) => {
     if (err) {
-      console.log("there was an error performing this one", err);
+      console.log('there was an error performing this one', err);
     } else {
-      console.log("success!");
+      console.log('success!');
     }
   });
 };
@@ -132,9 +132,9 @@ let updateBoss = () => {
   postModel
     .updateMany({}, { $unset: { boss: 1 } }, (err, res) => {
       if (err) {
-        console.log("there was an error performing this one", err);
+        console.log('there was an error performing this one', err);
       } else {
-        console.log("success!");
+        console.log('success!');
       }
     })
     .then(() => {
@@ -144,9 +144,9 @@ let updateBoss = () => {
           { $set: { boss: [bossList[i][0], bossList[i][1]] } },
           (err, res) => {
             if (err) {
-              console.log("there was an error performing this one", err);
+              console.log('there was an error performing this one', err);
             } else {
-              console.log("success adding boss!");
+              console.log('success adding boss!');
             }
           }
         );
@@ -161,9 +161,9 @@ let insertReviewsByUser = () => {
     { multi: true },
     (err, res) => {
       if (err) {
-        console.log("there was an error performing this one", err);
+        console.log('there was an error performing this one', err);
       } else {
-        console.log("success!");
+        console.log('success!');
       }
     }
   );
@@ -171,14 +171,14 @@ let insertReviewsByUser = () => {
 
 let test = () => {
   postModel.updateOne(
-    { name: "Washington", type: "e" },
-    { $push: { reviewsByUser: "test" } },
+    { name: 'Washington', type: 'e' },
+    { $push: { reviewsByUser: 'test' } },
     { upsert: true },
     (err, res) => {
       if (err) {
-        console.log("there was an error");
+        console.log('there was an error');
       } else {
-        console.log("things went well");
+        console.log('things went well');
       }
     }
   );
@@ -210,7 +210,7 @@ let insertReview = (
       { upsert: true, multi: true },
       (err, resp) => {
         if (err) {
-          console.log("there wasa an error", err);
+          console.log('there wasa an error', err);
           reject(err);
         } else {
           resolve(resp);
@@ -224,8 +224,8 @@ let insertReview = (
 findReviews = (city, type) => {
   return new Promise((resolve, reject) => {
     postModel.find(
-      { name: city, type: { $regex: type, $options: "i" } },
-      "reviewsByUser",
+      { name: city, type: { $regex: type, $options: 'i' } },
+      'reviewsByUser',
       (err, resp) => {
         if (err) {
           reject(err);
@@ -240,8 +240,8 @@ findReviews = (city, type) => {
 findBoss = (city, type) => {
   return new Promise((resolve, reject) => {
     postModel.find(
-      { name: city, type: { $regex: type, $options: "i" } },
-      "boss",
+      { name: city, type: { $regex: type, $options: 'i' } },
+      'boss',
       (err, resp) => {
         if (err) {
           reject(err);
