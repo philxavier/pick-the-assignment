@@ -1,3 +1,4 @@
 node_modules
 google_api.js
 mongo.config.js
+.env
